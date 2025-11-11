@@ -1,0 +1,16 @@
+{% extends  "master.html" %}
+
+{% block title %}
+    Details of {{dish.name}}
+{% endblock %}
+
+{% block content %}
+    <h1>{{dish.id}}{{dish.name}}</h1>
+
+    <p>Description : {{dish.description}}</p>
+    <p>District : {{dish.district}}</p>
+    <p>Price : {{dish.price}}</p>
+
+    <p>Back to <a href="{% url 'dish_list' %}">Menu</a></p>
+
+{% endblock %}
