@@ -1,0 +1,19 @@
+{% extends "master.html" %}
+
+{% block title %}
+My Kitchen - List of all Dishes
+{% endblock %}
+
+{% block content %}
+
+ <a href="/" class="btn btn-primary text-decoration-none">Back</a>
+
+  <h1>Dishes</h1>
+
+  <ul>
+    {% for dish in dishes_list %}
+      <li><a href="{% url 'dish_detail' dish.id %}">{{dish.name}}</a></li>
+    {% endfor %}
+  </ul>
+  
+{% endblock %}

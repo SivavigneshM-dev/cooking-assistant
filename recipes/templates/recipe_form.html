@@ -1,0 +1,46 @@
+<h1>{{ title }}</h1>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <h3>Ingredients</h3>
+  {{ formset.management_form }}
+
+  <div id="ingredient-forms">
+    {% for form in formset %}
+      <div class="ingredient-form">
+        {{ form.as_p }}
+        <button type="button" class="remove-ingredient">Remove</button>
+      </div>
+    {% endfor %}
+  </div>
+
+  <button type="button" id="add-ingredient">Add Ingredient</button>
+  <br><br>
+  <button type="submit">Save</button>
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const addBtn = document.getElementById('add-ingredient');
+  const totalForms = document.querySelector('#id_ingredient_set-TOTAL_FORMS');
+  const formContainer = document.getElementById('ingredient-forms');
+
+  addBtn.addEventListener('click', () => {
+    const currentCount = parseInt(totalForms.value);
+    const newForm = formContainer.children[0].cloneNode(true);
+    newForm.innerHTML = newForm.innerHTML.replaceAll(`-0-`, `-${currentCount}-`);
+    const inputs = newForm.querySelectorAll('input');
+    inputs.forEach(input => input.value = '');
+    formContainer.appendChild(newForm);
+    totalForms.value = currentCount + 1;
+  });
+
+  formContainer.addEventListener('click', function(e) {
+    if (e.target.classList.contains('remove-ingredient')) {
+      e.target.parentElement.remove();
+    }
+  });
+});
+</script>

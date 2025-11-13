@@ -4,12 +4,18 @@
   My Kitchen
 {% endblock %}
 
-
 {% block content %}
-  <h1>My Kitchen</h1>
+  <div class="main-page-content">
+    <h1>Our Recipes</h1>
 
-  <h3>Our Dishes</h3>
-  
-  <p>Check out all our <a href="{% url 'dishess' %}">Dishes</a></p>
-  
+    <div class="recipe-category">
+      <h3>Veg</h3>
+      <p><a href="{% url 'recipes:recipe_list' %}?food_type=veg">See Veg dishes</a></p>
+    </div>
+
+    <div class="recipe-category">
+      <h3>Non-veg</h3>
+      <p><a href="{% url 'recipes:recipe_list' %}?food_type=non-veg">See Non-veg dishes</a></p>
+    </div>
+  </div>
 {% endblock %}
