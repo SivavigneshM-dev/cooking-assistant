@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Shopping List{% endblock %}</title>
+    
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <style>
+        body {
+            /* This is the biscuit color from your shopping-page-wrapper CSS */
+            background-color: #ffe0b2; 
+        }
+        /* Ensure 100% height for layout */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="shopping-page-wrapper">
+    <header class="shopping-page-header">
+        <a href="/" class="logo">
+            <img src="{% static 'images/recipeshare-logo.png' %}" alt="RecipeShare Logo" class="header-logo">
+        </a>
+        
+        <a href="{% url 'profile' %}" class="btn user-profile-btn">
+            <i class="fas fa-user"></i> {{ user.username }}
+        </a>
+    </header>
+
+    <div class="shopping-list-content"> 
+        <div class="container shopping-card-container"> 
+            
+            <div class="shopping-header">
+                <div class="header-text">
+                    <h1><i class="fas fa-shopping-basket"></i> Shopping List</h1>
+                    <p class="subtitle">Your ingredients organized by recipe</p>
+                </div>
+                
+                <div class="header-actions">
+                    <form action="{% url 'add_custom_item' %}" method="POST" class="add-custom-form">
+                        {% csrf_token %}
+                        <input type="text" name="item_name" placeholder="Add custom item (e.g. Milk)..." required>
+                        <button type="submit" class="btn-add"><i class="fas fa-plus"></i></button>
+                    </form>
+                    
+                    {% if shopping_list_items %}
+                    <a href="{% url 'clear_shopping_list' %}" class="btn-clear" onclick="return confirm('Are you sure you want to clear the entire list?');">
+                        <i class="fas fa-trash"></i> Clear All
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% regroup shopping_list_items by recipe as recipe_list %}
+
+            <div class="shopping-grid">
+                
+                {% for recipe_group in recipe_list %}
+                <div class="shopping-card">
+                    <div class="shopping-card-header">
+                        {% if recipe_group.grouper %}
+                        <h5>{{ recipe_group.grouper.title }}</h5>
+                        <span class="badge-recipe">Recipe</span>
+                        {% else %}
+                        <h5>General Items</h5>
+                        <span class="badge-general">Misc</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="shopping-card-body">
+                        <ul class="shopping-items-list">
+                            {% for item in recipe_group.list %}
+                            <li class="shopping-item {% if item.is_purchased %}purchased{% endif %}">
+                                
+                                <a href="{% url 'toggle_purchased' item.id %}" class="check-circle">
+                                    {% if item.is_purchased %}
+                                    <i class="fas fa-check-circle"></i>
+                                    {% else %}
+                                    <i class="far fa-circle"></i>
+                                    {% endif %}
+                                </a>
+
+                                <div class="item-details">
+                                    <span class="item-name">{{ item.name }}</span>
+                                    {% if item.quantity %}
+                                    <span class="item-qty">{{ item.quantity }} {{ item.unit }}</span>
+                                    {% endif %}
+                                </div>
+
+                                <a href="{% url 'delete_shopping_item' item.id %}" class="btn-delete-item">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-state">
+                    <i class="fas fa-carrot"></i>
+                    <h3>Your basket is empty</h3>
+                    <p>Go to recipes and click "Add to Shopping List" to get started!</p>
+                    <a href="/" class="btn sign-in-btn">Browse Recipes</a>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2025 RecipeShare. All rights reserved.</p>
+    </footer>
+
+</div>
+
+</body>
+</html>

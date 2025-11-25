@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About RecipeShare{% endblock %}
+
+{% block content %}
+
+<div class="about-header-section">
+    <div class="about-icon-circle">
+        <i class="fas fa-utensils fa-2x" style="color: white;"></i> </div>
+    <h1>About RecipeShare</h1>
+    <p>Your ultimate destination for discovering, sharing, and saving delicious recipes from around the world.</p>
+</div>
+
+<main class="about-container">
+
+    <section class="mission-section">
+        <h2>Our Mission</h2>
+        <p>
+            We believe that cooking should be accessible, enjoyable, and inspiring for everyone. RecipeShare brings
+            together food lovers from all walks of life to share their favorite recipes, discover new cuisines, and build a
+            vibrant community around the joy of cooking.
+        </p>
+    </section>
+
+    <section class="values-grid">
+        <div class="value-card">
+            <div class="value-icon-wrapper">
+                <i class="far fa-heart"></i>
+            </div>
+            <h3>Passion for Food</h3>
+            <p>We're passionate about bringing people together through the universal language of food and cooking.</p>
+        </div>
+
+        <div class="value-card">
+            <div class="value-icon-wrapper">
+                <i class="fas fa-user-friends"></i>
+            </div>
+            <h3>Community First</h3>
+            <p>Our community is at the heart of everything we do. Share, learn, and grow together with fellow food enthusiasts.</p>
+        </div>
+
+        <div class="value-card">
+            <div class="value-icon-wrapper">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h3>Easy to Use</h3>
+            <p>Save your favorite recipes, create shopping lists, and organize your digital cookbook with ease.</p>
+        </div>
+    </section>
+
+    <section class="offer-section">
+        <h2>What We Offer</h2>
+
+        <div class="offer-card">
+            <h3>Browse Thousands of Recipes</h3>
+            <p>Explore a vast collection of recipes from various cuisines and dietary preferences. Whether you're vegetarian, vegan, or a meat lover, we have something for everyone.</p>
+        </div>
+
+        <div class="offer-card">
+            <h3>Save & Organize Your Favorites</h3>
+            <p>Create your personal digital cookbook by saving recipes you love. Access them anytime, anywhere, and never lose track of that perfect dish again.</p>
+        </div>
+
+        <div class="offer-card">
+            <h3>Smart Shopping Lists</h3>
+            <p>Turn recipes into shopping lists with a single click. Plan your meals and shop efficiently with our integrated shopping list feature.</p>
+        </div>
+
+        <div class="offer-card">
+            <h3>Advanced Search & Filters</h3>
+            <p>Find exactly what you're looking for with our powerful search and filtering options. Search by cuisine, cooking time, difficulty level, and dietary preferences.</p>
+        </div>
+    </section>
+
+    <section class="about-contact-section">
+        <h2>Get in Touch</h2>
+        <p>Have questions, suggestions, or just want to say hello? We'd love to hear from you!</p>
+
+        <div class="contact-email-box">
+            <div class="email-link">
+                <i class="far fa-envelope"></i>
+                contact@recipeshare.com
+            </div>
+            </div>
+
+        <p style="margin-bottom: 15px;">Ready to start your culinary journey?</p>
+        <a href="{% url 'register' %}" class="about-cta-btn">Join RecipeShare Today</a>
+    </section>
+
+</main>
+
+{% endblock %}

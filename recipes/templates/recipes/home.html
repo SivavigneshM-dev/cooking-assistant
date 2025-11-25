@@ -1,0 +1,234 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Discover & Share
+Amazing Recipes{% endblock %} {% block content %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="hero-section">
+  <div class="hero-content">
+    <h1 class="discover-title">Discover & Share Amazing Recipes</h1>
+    <p class="hero-description">
+      Explore thousands of delicious recipes from around the world. Save your
+      favorites, create your own, and share with the community.
+    </p>
+
+    <form method="GET" class="main-search-form">
+      <div class="search-input-wrapper">
+        <input
+          type="text"
+          name="q"
+          id="recipe-search-input"
+          placeholder="Search for recipes..."
+          class="search-input"
+          value="{{ request.GET.q|default:'' }}"
+          onkeyup="filterRecipes()"
+        />
+        <span id="clear-search-btn" class="clear-search-btn"
+          ><i class="fas fa-times"></i
+        ></span>
+      </div>
+      <button type="submit" class="btn search-btn">Search</button>
+    </form>
+
+    <div class="quick-filters">
+      {% if request.GET.category != 'veg' %}
+      <a href="{% url 'home' %}?category=veg" class="btn filter-btn veg-btn"
+        ><i class="fas fa-leaf"></i> Vegetarian Dishes</a
+      >
+      {% endif %} {% if request.GET.category != 'non-veg' %}
+      <a
+        href="{% url 'home' %}?category=non-veg"
+        class="btn filter-btn non-veg-btn"
+        ><i class="fas fa-drumstick-bite"></i> Non-Vegetarian Dishes</a
+      >
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<section class="featured-recipes-section">
+  <div class="section-header">
+    <h2 class="featured-title">Featured Recipes</h2>
+    <a href="{% url 'home' %}" class="view-all-link">View All</a>
+  </div>
+
+  <div class="card-grid" id="recipe-card-grid">
+    {% for r in recipes %}
+    <div class="card" data-name="{{ r.name|lower }}">
+      <a href="{% url 'recipe_detail' id=r.id %}" class="image-link">
+        <div class="image-container">
+          <img src="{{ r.image.url }}" alt="{{ r.name }}" />
+
+          <span class="category-tag {{ r.category }}"
+            >{{ r.get_category_display }}</span
+          >
+        </div>
+      </a>
+
+      <div class="card-body">
+        <h3><a href="{% url 'recipe_detail' id=r.id %}">{{ r.name }}</a></h3>
+        <p class="description">{{ r.short_description|slice:":80" }}...</p>
+
+        <div class="card-meta">
+          <span class="meta-item">
+            <i class="fas fa-clock"></i> {{ r.cook_time }}
+          </span>
+          <span class="meta-item">
+            <i class="fas fa-user-friends"></i> {{ r.servings }}
+          </span>
+          <span class="meta-item"> {{ r.get_difficulty_display }} </span>
+        </div>
+
+        <div class="card-footer">
+          <span class="recipe-cuisine">{{ r.meal_time }}</span>
+
+          <a
+            href="javascript:void(0);"
+            onclick="toggleFavorite(event, {{ r.id }})"
+            class="favorite-icon"
+            id="favorite-icon-{{ r.id }}"
+          >
+            {% if user.is_authenticated and r.is_favorite %}
+            <i class="fas fa-heart" style="color: red"></i>
+            {% else %}
+            <i class="far fa-heart"></i>
+            {% endif %}
+          </a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p class="no-recipes" id="no-recipes-message">
+      No recipes match your criteria.
+    </p>
+    {% endfor %}
+  </div>
+</section>
+
+<div class="join-community-banner">
+  <div class="banner-content">
+    <h2>Join Our Community</h2>
+    <p>
+      Sign up today to save your favorite recipes, create your own cookbook, and
+      share your culinary creations with food lovers around the world.
+    </p>
+    <a href="{% url 'register' %}" class="btn get-started-btn"
+      >Get Started Free</a
+    >
+  </div>
+</div>
+
+<button id="scrollToTopBtn" title="Go to top">
+  <i class="fas fa-arrow-up"></i>
+</button>
+<script src="{% static 'js/scroll.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+<script>
+  function toggleFavorite(event, recipeId) {
+    event.preventDefault(); // Stop page from reloading
+
+    // Check if user is logged in (simple check if the URL exists)
+    // Note: You might want to handle the "Not Logged In" case in UI
+
+    fetch(`/toggle-favorite/${recipeId}/`, {
+      method: "GET",
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.status === 403 || response.url.includes("login")) {
+          // User is not logged in, redirect to login
+          window.location.href = "/accounts/login/";
+          return null;
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (!data) return; // Stopped at login redirect
+
+        const iconContainer = document.getElementById(
+          `favorite-icon-${recipeId}`
+        );
+        const icon = iconContainer.querySelector("i");
+
+        // Configure Toast
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+
+        if (data.status === "added") {
+          // Change to Solid Heart
+          icon.classList.remove("far");
+          icon.classList.add("fas");
+          icon.style.color = "red";
+
+          // Show "Added" Toast
+          Toast.fire({
+            icon: "success",
+            title: "Added to favorites",
+          });
+        } else {
+          // Change to Outline Heart
+          icon.classList.remove("fas");
+          icon.classList.add("far");
+          icon.style.color = ""; // Reset color
+
+          // Show "Removed" Toast (Optional: use 'info' or 'success' icon)
+          Toast.fire({
+            icon: "info",
+            title: "Removed from favorites",
+          });
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
+
+  function filterRecipes() {
+    const searchInput = document.getElementById("recipe-search-input");
+    // Use the value, trimmed and converted to lowercase for case-insensitive search
+    const filter = searchInput.value.toLowerCase().trim();
+
+    // Get all recipe cards
+    const cards = document.querySelectorAll(".card-grid .card");
+
+    let foundCount = 0;
+
+    cards.forEach((card) => {
+      // Get the recipe name from the data-name attribute
+      const recipeName = card.getAttribute("data-name");
+
+      // Check if the recipe name contains the search filter
+      if (recipeName.includes(filter)) {
+        // Show/keep visible
+        card.classList.remove("non-match");
+        foundCount++;
+      } else {
+        // Hide/blur the non-matching card
+        card.classList.add("non-match");
+      }
+    });
+
+    // Toggle the "No recipes match" message
+    const noRecipesMsg = document.getElementById("no-recipes-message");
+    if (noRecipesMsg) {
+      // The message exists: hide it if recipes are found, show it if not
+      if (foundCount > 0) {
+        noRecipesMsg.style.display = "none";
+      } else {
+        // The problematic line has been removed from the script to fix the template error.
+        noRecipesMsg.style.display = "block";
+      }
+    }
+  }
+</script>
+
+{% endblock %}

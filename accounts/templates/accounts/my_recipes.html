@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Recipes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-slate-800 min-h-screen font-sans">
+
+    <!-- Navbar Placeholder -->
+    <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-slate-900"><i class="fas fa-utensils text-orange-500 mr-2"></i>RecipeShare</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'create_recipe' %}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Create New</a>
+                    <div class="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center text-slate-600">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Header Section -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-900">My Recipes</h1>
+                <p class="text-slate-500 mt-1">Manage and view your collection of { count } recipes.</p>
+            </div>
+            <a href="{% url 'create_recipe' %}" class="bg-slate-900 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-slate-800 transition shadow-sm flex items-center gap-2">
+                <i class="fas fa-plus"></i> Add New Recipe
+            </a>
+        </div>
+
+        <!-- Recipe Grid -->
+        {% if recipes %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            {% for recipe in recipes %}
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition duration-300 group flex flex-col h-full">
+                
+                <!-- Image Area -->
+                <div class="relative h-48 w-full bg-gray-100 overflow-hidden">
+                    {% if recipe.image %}
+                        <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    {% elif recipe.image_url %}
+                        <img src="{{ recipe.image_url }}" alt="{{ recipe.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    {% else %}
+                        <div class="w-full h-full flex flex-col items-center justify-center text-gray-300">
+                            <i class="fas fa-utensils text-4xl mb-2"></i>
+                            <span class="text-xs uppercase tracking-wider font-semibold">No Image</span>
+                        </div>
+                    {% endif %}
+
+                    <!-- Difficulty Badge -->
+                    <div class="absolute top-3 right-3">
+                        <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-white/90 backdrop-blur-sm shadow-sm
+                        {% if recipe.difficulty == 'Easy' %} text-green-600
+                        {% elif recipe.difficulty == 'Medium' %} text-yellow-600
+                        {% else %} text-red-600 {% endif %}">
+                            {{ recipe.difficulty }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Content Area -->
+                <div class="p-5 flex-grow flex flex-col">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-orange-500 uppercase tracking-wider">{{ recipe.category }}</span>
+                        <span class="text-xs text-gray-400 flex items-center gap-1">
+                            <i class="far fa-clock"></i> {{ recipe.cook_time }}m
+                        </span>
+                    </div>
+                    
+                    <h3 class="text-lg font-bold text-slate-900 mb-2 line-clamp-1">{{ recipe.name }}</h3>
+                    <p class="text-slate-500 text-sm mb-4 line-clamp-2 flex-grow">
+                        {{ recipe.description|default:"No description provided." }}
+                    </p>
+
+                    <!-- Footer Meta -->
+                    <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-sm text-gray-500">
+                        <div class="flex items-center gap-4">
+                            <span title="Servings"><i class="fas fa-user-friends mr-1"></i> {{ recipe.servings }}</span>
+                            <span title="Ingredients"><i class="fas fa-carrot mr-1"></i> {{ recipe.ingredients.count }}</span>
+                        </div>
+                        <a href="#" class="text-slate-900 font-semibold hover:text-orange-500 transition">View <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+        
+        {% else %}
+        <!-- Empty State -->
+        <div class="text-center py-20 bg-white rounded-xl border border-dashed border-gray-300">
+            <div class="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center text-orange-500 text-2xl mx-auto mb-4">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">No recipes yet</h3>
+            <p class="text-slate-500 max-w-md mx-auto mt-2 mb-6">Your cookbook is empty! Start adding your favorite culinary creations to build your personal collection.</p>
+            <a href="{% url 'create_recipe' %}" class="inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-slate-900 hover:bg-slate-800 transition">
+                <i class="fas fa-plus mr-2"></i> Create First Recipe
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+
+</body>
+</html> 

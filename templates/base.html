@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecipeShare - {% block title %}{% endblock %}</title>    
+    <link rel="stylesheet" href="{% static 'style.css' %}">    
+    <link rel="icon" type="image/png" href="{% static 'images/recipe-logo.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+{% comment %} 
+We use a class on the body for auth pages to apply the specific background color
+{% endcomment %}
+<body class="{% if '/accounts/' in request.path %}auth-page-body{% endif %}">
+
+{% if '/accounts/login/' not in request.path and '/accounts/signup/' not in request.path %}
+    <header class="navbar">
+        <div class="logo">
+            <a href="{% url 'home' %}" style="text-decoration: none; display: flex; align-items: center; color: inherit;">
+            <img src="{% static 'images/recipe-logo.png' %}" alt="RecipeShare" style="height: 50px; width: auto; margin-right: 10px;">
+            {% comment %} <span>RecipeShare</span> {% endcomment %}
+        </a>
+        </div>
+        <nav>
+            <a href="{% url 'home' %}" class="nav-item">Home</a>
+            <a href="{% url 'home' %}?category=veg" class="nav-item">Vegetarian</a>
+            <a href="{% url 'home' %}?category=non-veg" class="nav-item">Non-Vegetarian</a>
+            <a href="{% url 'home' %}" class="nav-item"><i class="fas fa-search"></i> Search</a>
+            <a class="nav-link" href="{% url 'about' %}">About</a>
+        </nav>
+        
+        <div class="auth-buttons">
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="btn user-profile-btn">
+                    <i class="far fa-user"></i> {{ user.username }}
+                </a>
+            {% else %}
+        
+                <a href="{% url 'login' %}" class="btn sign-in-btn">Sign In</a>
+        
+            {% endif %}
+        </div>
+        <div id="toast-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" fill="black"/>
+                    <path d="M7 12L10.5 15.5L17 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span id="toast-message">Message goes here</span>
+        </div>
+    </header>
+
+    <main>
+{% endif %}
+
+    {% block content %}
+        {% if '/accounts/login/' in request.path or '/accounts/signup/' in request.path %}
+            <div class="auth-page-container">
+                <div class="auth-box">
+                    <header class="auth-header">
+                        <div class="recipe-chef-hat">
+                            <i class="fas fa-hat-chef"></i>
+                        </div>
+                        <h1>Welcome to RecipeShare</h1>
+                        <p>Join our community of food lovers</p>
+                    </header>
+
+                    <div class="auth-tabs">
+                        <a href="{% url 'login' %}" class="auth-tab-link {% if '/accounts/login/' in request.path %}active{% endif %}">Sign In</a>
+                        <a href="{% url 'signup' %}" class="auth-tab-link {% if '/accounts/signup/' in request.path %}active{% endif %}">Sign Up</a>
+                    </div>
+
+                    <div class="form-container">
+                        {{ block.super }}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <button id="scrollToTopBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+    
+        <script src="{% static 'js/scroll.js' %}"></script>
+    
+        <script src="{% static 'js/main.js' %}"></script>
+
+    {% endblock %}
+
+{% if '/accounts/login/' not in request.path and '/accounts/signup/' not in request.path %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 RecipeShare. All rights reserved.</p>
+    </footer>
+{% endif %}
+
+</body>
+</html>

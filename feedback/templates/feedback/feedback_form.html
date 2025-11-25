@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Feedback{% endblock %}
+
+{% block content %}
+<h2 class="page-title">Request a New Recipe</h2>
+
+<form method="POST" class="form-box">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn">Submit</button>
+</form>
+{% endblock %}

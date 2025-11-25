@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ recipe.name }}</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    {% if not user.is_authenticated %}
+    <div class="modal-overlay">
+      <div class="modal-content">
+        <h2>🔒 Content Restricted</h2>
+        <p>Please **Log In** or **Sign Up** to view the full recipe details,
+          ingredients, and instructions.
+        </p>
+        <a href="{% url 'login' %}?next={{ request.path }}" class="button">Log In</a>
+        <a href="{% url 'signup' %}" class="button secondary">Sign Up</a>
+      </div>
+    </div>
+    <div class="gated-content">
+      {% endif %}
+
+      <div class="container">
+        <a href="javascript:history.back()" class="back-link">← Back</a>
+
+        <div class="content-layout">
+          <div class="left-panel">
+            {% if recipe.image %}
+            <div class="image-container">
+              <img
+                src="{{ recipe.image.url }}"
+                alt="{{ recipe.name }}"
+                class="recipe-image"
+              />
+              <span class="category-tag"
+                >{{ recipe.category|default:"Vegetarian" }}</span
+              >
+            </div>
+            {% else %}
+            <div class="image-container">
+              <img
+                src="path/to/placeholder/image.jpg"
+                alt="No image available"
+                class="recipe-image"
+              />
+              <span class="category-tag"
+                >{{ recipe.category|default:"Vegetarian" }}</span
+              >
+            </div>
+            {% endif %}
+
+            <div class="ingredients-container">
+              <h3>Ingredients</h3>
+              <ul class="ingredients-list">
+                {% for ingredient in ingredients %}
+                <li>{{ ingredient }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+
+          <div class="right-panel">
+            <h1 class="recipe-title">{{ recipe.name }}</h1>
+            <p class="recipe-description">
+              {{ recipe.description|default:"A fresh and healthy quinoa salad
+              with Mediterranean flavors, perfect for lunch or dinner." }}
+            </p>
+
+            <div class="details-grid">
+              <div class="detail-card">
+                <div class="detail-icon">🕑</div>
+                <div class="detail-value">
+                  {{ recipe.cook_time|default:"25 min" }}
+                </div>
+                Cook Time
+              </div>
+              <div class="detail-card">
+                <div class="detail-icon">🍽</div>
+                <div class="detail-value">
+                  {{ recipe.servings|default:"4 Servings" }}
+                </div>
+                Servings
+              </div>
+              <div class="detail-card">
+                <div class="detail-icon">⭐</div>
+                <div class="detail-value">
+                  {{ recipe.difficulty|default:"Easy" }}
+                </div>
+                Difficulty
+              </div>
+              <div class="detail-card">
+                <div class="detail-icon">🌎</div>
+                <div class="detail-value">
+                  {{ recipe.cuisine|default:"Cuisine" }}
+                </div>
+                Cuisine
+              </div>
+            </div>
+
+            <div class="recipe-actions"> 
+              <button id="fav-btn-{{ recipe.id }}" class="btn-favorite {% if is_favorite %}saved{% endif %}"  onclick="toggleDetailFavorite({{ recipe.id }})">
+                {% if is_favorite %} ❤️ Saved to Favorites {% else %} 🤍 Save Recipe {% endif %} </button>
+                <form action="{% url 'add_recipe_ingredients_to_list' recipe.id %}" method="post" style="display: inline;">
+                {% comment %} <form action="{% url 'add_recipe_ingredients_to_list' recipe.id %}" method="post" style="display: inline;"> {% endcomment %}
+                  {% csrf_token %}
+                <button type="submit" class="btn-shopping-list" title="Add ingredients to shopping list"> 🛒 Add to List </button>
+              </form>
+            </div>
+
+            <div class="instructions-container">
+              <h3>Instructions</h3>
+              <ol class="instructions-list">
+                {% for instruction in instructions_list %}
+                <li>
+                  <div>{{ instruction }}</div>
+                </li>
+                {% endfor %}
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% if not user.is_authenticated %}
+    </div>
+    {% endif %}
+
+    <script>
+      function toggleDetailFavorite(recipeId) {
+        fetch(`/toggle-favorite/${recipeId}/`, {
+          method: "GET",
+          headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            if (response.status === 403 || response.url.includes("login")) {
+              window.location.href = "/accounts/login/";
+              return null;
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (!data) return;
+
+            const btn = document.getElementById(`fav-btn-${recipeId}`);
+
+            // Configure Toast
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+            });
+
+            if (data.status === "added") {
+              // Update Button Style
+              btn.innerHTML = "❤️ Saved to Favorites";
+              btn.classList.add("saved");
+
+              Toast.fire({ icon: "success", title: "Added to favorites" });
+            } else {
+              // Update Button Style
+              btn.innerHTML = "🤍 Save Recipe";
+              btn.classList.remove("saved");
+
+              Toast.fire({ icon: "info", title: "Removed from favorites" });
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+    </script>
+  </body>
+</html>

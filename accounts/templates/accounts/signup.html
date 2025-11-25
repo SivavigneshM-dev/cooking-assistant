@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - RecipeShare</title>
+    
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Essential styles for the Password Toggle */
+        .password-input-wrapper {
+            position: relative;
+            width: 100%;
+            display: block;
+        }
+        .password-toggle-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #777;
+            z-index: 5;
+            width: 24px;
+            text-align: center;
+            user-select: none;
+        }
+        .password-input-wrapper input {
+            padding-right: 40px !important; 
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="auth-page-body">
+
+    <div class="auth-page-container">
+        <div class="auth-box">
+            
+            <div class="auth-header">
+                <div class="recipe-chef-hat">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <h2>Create Account</h2>
+                <p>Sign up to start saving and sharing recipes</p>
+            </div>
+
+            <div class="form-container">
+                <form method="POST" class="form-box">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn get-started-btn">Create Account</button>
+                </form>
+
+                <p class="auth-switch-link">
+                    Already have an account? <a href="/accounts/login/">Log in here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const passwordInputs = document.querySelectorAll("input[type='password']");
+            passwordInputs.forEach(function(input) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'password-input-wrapper';
+                input.parentNode.insertBefore(wrapper, input);
+                wrapper.appendChild(input);
+                const icon = document.createElement('i');
+                icon.className = 'fa-solid fa-eye password-toggle-icon';
+                icon.addEventListener('click', function() {
+                    if (input.type === "password") {
+                        input.type = "text";
+                        icon.classList.replace("fa-eye-slash", "fa-eye");
+                    } else {
+                        input.type = "password";
+                        icon.classList.replace("fa-eye", "fa-eye-slash");
+                    }
+                });
+                wrapper.appendChild(icon);
+            });
+        });
+    </script>
+</body>
+</html>
