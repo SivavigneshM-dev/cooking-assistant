@@ -1,0 +1,14 @@
+{
+    "version": 2,
+    "builds": [{
+        "src":"cook_assist/wsgi.py",
+        "use":"@vercel/python",
+        "config": { "maxLambdaSize": "15mb" ,"runtime":"python3.13.3" }
+    }],
+    "routes":[
+      {
+        "src":"/(.*)",
+        "dest":"cook_assist/wsgi.py"
+      }
+    ]
+}
