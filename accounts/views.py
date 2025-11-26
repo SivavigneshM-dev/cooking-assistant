@@ -219,3 +219,25 @@ def my_recipes(request):
     # THIS WAS MISSING
     recipes = Recipe.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'accounts/my_recipes.html', {'recipes': recipes})
+
+
+
+@login_required
+def clear_purchased_items(request):
+    """Deletes all items in the shopping list that are marked as purchased."""
+    if request.method == 'GET':
+        # Filter items belonging to the current user that are marked as purchased
+        purchased_items = ShoppingListItem.objects.filter(
+            user=request.user, 
+            is_purchased=True
+        )
+        count = purchased_items.count()
+        purchased_items.delete()
+        
+        if count > 0:
+            messages.success(request, f'Successfully cleared {count} purchased items!')
+        else:
+            messages.info(request, 'No purchased items to clear.')
+            
+    # Redirect back to the shopping list page
+    return redirect('shopping_list')

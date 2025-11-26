@@ -1298,33 +1298,21 @@
 /* ========================================================== */
 
 .card.non-match {
-    /* 1. Low Opacity (De-emphasis) */
     opacity: 0.2; 
-    
-    /* 2. Blur Effect (Optional, for visual de-emphasis) */
     filter: blur(2px);
-    
-    /* 3. Prevent Interaction (Good practice for de-emphasized content) */
     pointer-events: none;
-    
-    /* 4. Smooth Transition */
     transition: opacity 0.4s ease, filter 0.4s ease, transform 0s !important;
-    
-    /* OPTIONAL: To HIDE completely (simpler) use: */
-    /* display: none; */
 }
 
 .card:hover.non-match {
-    /* Prevent hover effect on blurred cards */
     transform: none; 
     box-shadow: var(--card-shadow); 
 }
 
 
-/* Style for the Recipe Detail Action Buttons */
 .recipe-actions {
   display: flex;
-  gap: 10px; /* Space between buttons */
+  gap: 10px; 
   margin-top: 20px;
 }
 
@@ -1338,9 +1326,8 @@
   flex-grow: 1; /* Make buttons grow to fill space */
 }
 
-/* Favorite Button Styles (Existing) */
 .btn-favorite {
-  background-color: #f8f9fa; /* Light grey background */
+  background-color: #f8f9fa; 
   color: #333;
   border: 1px solid #ddd;
 }
@@ -1350,7 +1337,7 @@
 }
 
 .btn-favorite.saved {
-  background-color: #ff6b6b; /* Red when saved */
+  background-color: #ff6b6b; 
   color: white;
   border-color: #ff6b6b;
 }
@@ -1698,5 +1685,215 @@
     
     .recipe-image {
         height: 250px;
+    }
+}
+
+/* ========================================================== */
+/* ========= NEW V2 SHOPPING LIST STYLES ==================== */
+/* ========================================================== */
+
+/* Adjusting the main container for the new layout */
+.shopping-card-container {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+/* 1. Header Styling */
+.shopping-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.shopping-header h1 {
+    font-size: 2.2em;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+}
+
+.shopping-header .subtitle {
+    font-size: 1em;
+    color: #888;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px; /* Adjust spacing if it wraps */
+}
+
+.add-custom-form {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #f8f8f8;
+}
+
+.add-custom-form input {
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    font-size: 1em;
+    background: transparent;
+}
+
+.add-custom-form .btn-add {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 10px 15px;
+    border-radius: 0;
+    font-size: 1em;
+    border: none;
+}
+.add-custom-form .btn-add:hover {
+    background-color: #e64a19;
+}
+
+.btn-clear {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9em;
+}
+.btn-clear:hover {
+    background-color: #d32f2f;
+    color: white;
+}
+
+/* 2. Two-Column Grid Layout */
+.shopping-page-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 30px;
+}
+
+.list-column,
+.purchased-column {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    border: 1px solid #eee;
+}
+
+.column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.column-header h2 {
+    font-size: 1.5em;
+    color: var(--secondary-color);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-clear-purchased {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+.btn-clear-purchased:hover {
+    background-color: #ddd;
+    color: #000;
+}
+
+.empty-column-message {
+    text-align: center;
+    padding: 40px 15px;
+    color: #999;
+    font-style: italic;
+}
+
+/* 3. Item Styling (V2 - No Quantity/Unit) */
+.shopping-item-v2 {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dashed #eee;
+    transition: background-color 0.2s;
+}
+
+.shopping-item-v2:last-child {
+    border-bottom: none;
+}
+
+.check-circle-v2 {
+    flex-shrink: 0;
+    margin-right: 15px;
+    font-size: 1.2em;
+    color: var(--primary-color);
+}
+
+.item-name-v2 {
+    flex-grow: 1;
+    font-size: 1.1em;
+    color: #333;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.btn-delete-item-v2 {
+    flex-shrink: 0;
+    margin-left: 15px;
+    color: #ccc;
+    font-size: 0.9em;
+    transition: color 0.2s;
+}
+
+.btn-delete-item-v2:hover {
+    color: #f44336;
+}
+
+/* Purchased Item Overrides */
+.shopping-item-v2.purchased-v2 {
+    opacity: 0.7;
+}
+
+.shopping-item-v2.purchased-v2 .item-name-v2 {
+    text-decoration: line-through;
+    color: #999;
+    font-weight: normal;
+}
+
+.shopping-item-v2.purchased-v2 .check-circle-v2 {
+    color: #28a745; 
+}
+
+
+@media (max-width: 768px) {
+    .shopping-page-grid {
+        grid-template-columns: 1fr; 
+    }
+
+    .shopping-header {
+        flex-direction: column;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .add-custom-form {
+        flex-grow: 1;
+        max-width: 65%;
     }
 }

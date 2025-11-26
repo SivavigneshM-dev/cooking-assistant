@@ -20,5 +20,6 @@ urlpatterns = [
     path('add-recipe/', views.add_recipe, name='add_recipe'),
     path('create/', views.create_recipe, name='create_recipe'),
     path('my-recipes/', views.my_recipes, name='my_recipes'),
-    path('dashboard/', views.profile_view, name='profile_dashboard'),    
+    path('dashboard/', views.profile_view, name='profile_dashboard'),
+    path('clear-purchased/', views.clear_purchased_items, name='clear_purchased'),    
 ]

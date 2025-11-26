@@ -7,13 +7,12 @@ For more information on this file, see
 https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 """
 
+
 import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cook_assist.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cooking_assistant.settings')
 
 application = get_wsgi_application()
-
-
-app = application
+app = application  # <--- THIS IS REQUIRED FOR VERCEL

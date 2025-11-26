@@ -23,102 +23,87 @@
 </head>
 <body>
 
-<div class="shopping-page-wrapper">
-    <header class="shopping-page-header">
-        <a href="/" class="logo">
-            <img src="{% static 'images/recipe-logo.png' %}" alt="RecipeShare Logo" class="header-logo">
-        </a>
-        
-        <a href="{% url 'profile' %}" class="btn user-profile-btn">
-            <i class="fas fa-user"></i> {{ user.username }}
-        </a>
-    </header>
+<div class="shopping-list-content">
+    <div class="container shopping-card-container">
 
-    <div class="shopping-list-content"> 
-        <div class="container shopping-card-container"> 
-            
-            <div class="shopping-header">
-                <div class="header-text">
-                    <h1><i class="fas fa-shopping-basket"></i> Shopping List</h1>
-                    <p class="subtitle">Your ingredients organized by recipe</p>
+        <div class="shopping-header">
+            <div class="header-actions">
+                <form action="{% url 'add_custom_item' %}" method="POST" class="add-custom-form">
+                    {% csrf_token %}
+                    <input type="text" name="item_name" placeholder="Add custom item (e.g. Milk)..." required>
+                    <button type="submit" class="btn-add"><i class="fas fa-plus"></i></button>
+                </form>
+
+                {% if shopping_list_items %}
+                <a href="{% url 'clear_shopping_list' %}" class="btn-clear" onclick="return confirm('Are you sure you want to clear the entire list?');">
+                    <i class="fas fa-trash"></i> Clear All
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="shopping-page-grid">
+            <div class="list-column">
+                <div class="column-header">
+                    <h2><i class="far fa-clipboard"></i> To Buy List ({{ shopping_list_items|length }})</h2>
                 </div>
-                
-                <div class="header-actions">
-                    <form action="{% url 'add_custom_item' %}" method="POST" class="add-custom-form">
-                        {% csrf_token %}
-                        <input type="text" name="item_name" placeholder="Add custom item (e.g. Milk)..." required>
-                        <button type="submit" class="btn-add"><i class="fas fa-plus"></i></button>
-                    </form>
-                    
-                    {% if shopping_list_items %}
-                    <a href="{% url 'clear_shopping_list' %}" class="btn-clear" onclick="return confirm('Are you sure you want to clear the entire list?');">
-                        <i class="fas fa-trash"></i> Clear All
-                    </a>
+                <div class="column-body">
+                    {% for item in shopping_list_items %}
+                        {% if not item.is_purchased %}
+                            <div class="shopping-item-v2">
+                                <a href="{% url 'toggle_purchased' item.id %}" class="check-circle-v2">
+                                    <i class="far fa-circle"></i>
+                                </a>
+                                <span class="item-name-v2">{{ item.name }}</span>
+                                <a href="{% url 'delete_shopping_item' item.id %}" class="btn-delete-item-v2" onclick="return confirm('Remove {{ item.name }} from the list?');">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if not shopping_list_items.list_not_purchased %}
+                    <p class="empty-column-message">All items purchased! Happy cooking!</p>
                     {% endif %}
                 </div>
             </div>
 
-            {% regroup shopping_list_items by recipe as recipe_list %}
-
-            <div class="shopping-grid">
-                
-                {% for recipe_group in recipe_list %}
-                <div class="shopping-card">
-                    <div class="shopping-card-header">
-                        {% if recipe_group.grouper %}
-                        <h5>{{ recipe_group.grouper.title }}</h5>
-                        <span class="badge-recipe">Recipe</span>
-                        {% else %}
-                        <h5>General Items</h5>
-                        <span class="badge-general">Misc</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="shopping-card-body">
-                        <ul class="shopping-items-list">
-                            {% for item in recipe_group.list %}
-                            <li class="shopping-item {% if item.is_purchased %}purchased{% endif %}">
-                                
-                                <a href="{% url 'toggle_purchased' item.id %}" class="check-circle">
-                                    {% if item.is_purchased %}
+            <div class="purchased-column">
+                <div class="column-header">
+                    <h2><i class="fas fa-check-circle"></i> Purchased Items</h2>
+                    <a href="{% url 'clear_purchased' %}" class="btn-clear-purchased" onclick="return confirm('Are you sure you want to clear all purchased items?');">Clear Purchased</a>
+                </div>
+                <div class="column-body">
+                    {% for item in shopping_list_items %}
+                        {% if item.is_purchased %}
+                            <div class="shopping-item-v2 purchased-v2">
+                                <a href="{% url 'toggle_purchased' item.id %}" class="check-circle-v2">
                                     <i class="fas fa-check-circle"></i>
-                                    {% else %}
-                                    <i class="far fa-circle"></i>
-                                    {% endif %}
                                 </a>
-
-                                <div class="item-details">
-                                    <span class="item-name">{{ item.name }}</span>
-                                    {% if item.quantity %}
-                                    <span class="item-qty">{{ item.quantity }} {{ item.unit }}</span>
-                                    {% endif %}
-                                </div>
-
-                                <a href="{% url 'delete_shopping_item' item.id %}" class="btn-delete-item">
-                                    <i class="fas fa-times"></i>
+                                <span class="item-name-v2">{{ item.name }}</span>
+                                <a href="{% url 'delete_shopping_item' item.id %}" class="btn-delete-item-v2" onclick="return confirm('Remove {{ item.name }} from the list?');">
+                                    <i class="fas fa-trash-alt"></i>
                                 </a>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if not shopping_list_items.list_purchased %}
+                    <p class="empty-column-message">Nothing purchased yet. Click an item to move it here!</p>
+                    {% endif %}
                 </div>
-                {% empty %}
-                <div class="empty-state">
-                    <i class="fas fa-carrot"></i>
-                    <h3>Your basket is empty</h3>
-                    <p>Go to recipes and click "Add to Shopping List" to get started!</p>
-                    <a href="/" class="btn sign-in-btn">Browse Recipes</a>
-                </div>
-                {% endfor %}
             </div>
-
         </div>
-    </div>
-    
-    <footer>
-        <p>© 2025 RecipeShare. All rights reserved.</p>
-    </footer>
+        {% if not shopping_list_items %}
+        <div class="empty-state">
+            <i class="fas fa-carrot"></i>
+            <h3>Your basket is empty</h3>
+            <p>Go to recipes and click "Add to Shopping List" to get started!</p>
+            <a href="/" class="btn sign-in-btn">Browse Recipes</a>
+        </div>
+        {% endif %}
 
+    </div>
 </div>
 
 </body>
