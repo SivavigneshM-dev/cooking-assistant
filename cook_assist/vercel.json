@@ -2,18 +2,19 @@
   "version": 2,
   "builds": [
     {
-      "src": "cooking_assistant/wsgi.py",
+      "src": "cook_assist/wsgi.py",
       "use": "@vercel/python",
       "config": { 
         "maxLambdaSize": "15mb", 
-        "runtime": "python3.9" 
+        "runtime": "python3.9",
+        "moduleName": "cook_assist.wsgi" 
       }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "cooking_assistant/wsgi.py"
+      "dest": "cook_assist/wsgi.py"
     }
   ]
 }
