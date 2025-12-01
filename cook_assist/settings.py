@@ -1,6 +1,11 @@
 import os
 from pathlib import Path
 
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://cooking-assistant-h2w8.onrender.com',
+]
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'default-insecure-key')
@@ -15,9 +20,6 @@ if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
     ALLOWED_HOSTS.append('.onrender.com')
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://cooking-assistant-h2w8.onrender.com/',
-]
 
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
