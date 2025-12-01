@@ -49,8 +49,7 @@
 
             <div class="form-container">
                 <form method="POST" class="form-box">
-                    {% csrf_token %}
-                    {{ form.as_p }}
+                    {% csrf_token %} {{ form.as_p }}
                     <button class="btn get-started-btn">Create Account</button>
                 </form>
 

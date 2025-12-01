@@ -1,134 +1,134 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - RecipeShare</title>
-    
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* Essential styles for the Password Toggle */
-        .password-input-wrapper {
-            position: relative;
-            width: 100%;
-            display: block;
-        }
-        .password-toggle-icon {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #777;
-            z-index: 5;
-            width: 24px;
-            text-align: center;
-            user-select: none;
-        }
-        .password-input-wrapper input {
-            padding-right: 40px !important; 
-            width: 100%;
-        }
+      /* Essential styles for the Password Toggle */
+      .password-input-wrapper {
+        position: relative;
+        width: 100%;
+        display: block;
+      }
+      .password-toggle-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #777;
+        z-index: 5;
+        width: 24px;
+        text-align: center;
+        user-select: none;
+      }
+      .password-input-wrapper input {
+        padding-right: 40px !important;
+        width: 100%;
+      }
     </style>
-</head>
-<body class="auth-page-body">
-
+  </head>
+  <body class="auth-page-body">
     <div class="auth-page-container">
-        <div class="auth-box">
-            
-            <div class="auth-header">
-                <div class="recipe-chef-hat">
-                    <i class="fa-solid fa-utensils"></i>
-                </div>
-                <h2>Welcome Back!</h2>
-                <p>Enter your credentials to access your account</p>
-            </div>
-
-            <div class="form-container">
-                <form method="POST" class="form-box">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button class="btn sign-in-btn">Sign In</button>
-                </form>
-
-                <p class="auth-switch-link">
-                    Don't have an account? <a href="/accounts/signup/">Sign up here</a>
-                </p>
-                <p class="auth-switch-link">
-                    Forgot your password? <a href="{% url 'forgot_password' %}">Reset here</a>
-                </p>
-            </div>
+      <div class="auth-box">
+        <div class="auth-header">
+          <div class="recipe-chef-hat">
+            <i class="fa-solid fa-utensils"></i>
+          </div>
+          <h2>Welcome Back!</h2>
+          <p>Enter your credentials to access your account</p>
         </div>
+
+        <div class="form-container">
+          <form method="POST" class="form-box">
+            {% csrf_token %} {{ form.as_p }}
+            <button class="btn sign-in-btn">Sign In</button>
+          </form>
+
+          <p class="auth-switch-link">
+            Don't have an account? <a href="/accounts/signup/">Sign up here</a>
+          </p>
+          <p class="auth-switch-link">
+            Forgot your password?
+            <a href="{% url 'forgot_password' %}">Reset here</a>
+          </p>
+        </div>
+      </div>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            
-            // --- 1. PASSWORD TOGGLE LOGIC ---
-            const passwordInputs = document.querySelectorAll("input[type='password']");
-            
-            passwordInputs.forEach(function(input) {
-                // Create wrapper
-                const wrapper = document.createElement('div');
-                wrapper.className = 'password-input-wrapper';
-                
-                // Insert wrapper before input, then move input inside
-                input.parentNode.insertBefore(wrapper, input);
-                wrapper.appendChild(input);
-                
-                // Create the Eye Icon
-                const icon = document.createElement('i');
-                icon.className = 'fa-solid fa-eye password-toggle-icon'; // Start with Eye Open
-                
-                icon.addEventListener('click', function() {
-                    if (input.type === "password") {
-                        // Show Password
-                        input.type = "text";
-                        icon.classList.remove("fa-eye");
-                        icon.classList.add("fa-eye-slash");
-                    } else {
-                        // Hide Password
-                        input.type = "password"; 
-                        icon.classList.remove("fa-eye-slash");
-                        icon.classList.add("fa-eye");
-                    }
-                });
-                
-                wrapper.appendChild(icon);
-            });
+      document.addEventListener("DOMContentLoaded", function() {
 
-            // --- 2. SWEETALERT POPUP LOGIC ---
-            // This Django code runs on the server and injects JS if messages exist.
-            {% if messages %}
-                {% for message in messages %}
-                    // Check if the message is a success type
-                    {% if 'success' in message.tags %}
-                        Swal.fire({
-                            title: 'Success!',
-                            text: "{{ message|escapejs }}",  // escapejs prevents errors if message has quotes
-                            icon: 'success',
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#ff6600' // Matches your theme color
-                        });
-                    {% endif %}
-                    
-                    // Optional: Handle error messages too
-                    {% if 'error' in message.tags %}
-                        Swal.fire({
-                            title: 'Error',
-                            text: "{{ message|escapejs }}",
-                            icon: 'error',
-                            confirmButtonText: 'Try Again'
-                        });
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-        });
+          // --- 1. PASSWORD TOGGLE LOGIC ---
+          const passwordInputs = document.querySelectorAll("input[type='password']");
+
+          passwordInputs.forEach(function(input) {
+              // Create wrapper
+              const wrapper = document.createElement('div');
+              wrapper.className = 'password-input-wrapper';
+
+              // Insert wrapper before input, then move input inside
+              input.parentNode.insertBefore(wrapper, input);
+              wrapper.appendChild(input);
+
+              // Create the Eye Icon
+              const icon = document.createElement('i');
+              icon.className = 'fa-solid fa-eye password-toggle-icon'; // Start with Eye Open
+
+              icon.addEventListener('click', function() {
+                  if (input.type === "password") {
+                      // Show Password
+                      input.type = "text";
+                      icon.classList.remove("fa-eye");
+                      icon.classList.add("fa-eye-slash");
+                  } else {
+                      // Hide Password
+                      input.type = "password";
+                      icon.classList.remove("fa-eye-slash");
+                      icon.classList.add("fa-eye");
+                  }
+              });
+
+              wrapper.appendChild(icon);
+          });
+
+          // --- 2. SWEETALERT POPUP LOGIC ---
+          // This Django code runs on the server and injects JS if messages exist.
+          {% if messages %}
+              {% for message in messages %}
+                  // Check if the message is a success type
+                  {% if 'success' in message.tags %}
+                      Swal.fire({
+                          title: 'Success!',
+                          text: "{{ message|escapejs }}",  // escapejs prevents errors if message has quotes
+                          icon: 'success',
+                          confirmButtonText: 'OK',
+                          confirmButtonColor: '#ff6600' // Matches your theme color
+                      });
+                  {% endif %}
+
+                  // Optional: Handle error messages too
+                  {% if 'error' in message.tags %}
+                      Swal.fire({
+                          title: 'Error',
+                          text: "{{ message|escapejs }}",
+                          icon: 'error',
+                          confirmButtonText: 'Try Again'
+                      });
+                  {% endif %}
+              {% endfor %}
+          {% endif %}
+      });
     </script>
-    
-</body>
+  </body>
 </html>

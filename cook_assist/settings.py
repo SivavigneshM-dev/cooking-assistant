@@ -15,6 +15,10 @@ if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
     ALLOWED_HOSTS.append('.onrender.com')
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://cooking-assistant-h2w8.onrender.com/',
+]
+
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.admin',
