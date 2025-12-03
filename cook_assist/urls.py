@@ -29,8 +29,6 @@ urlpatterns = [
     path('', include('recipes.urls')),               
     path('accounts/', include('accounts.urls')),     
     path('feedback/', include('feedback.urls')),
-    # path('accounts/', include('django.contrib.auth.urls')),   
-    # path('login/', include('django.contrib.auth.urls')),  
 ]
 
 

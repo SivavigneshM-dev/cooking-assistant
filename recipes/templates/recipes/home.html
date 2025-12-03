@@ -19,26 +19,18 @@ Amazing Recipes{% endblock %} {% block content %}
           placeholder="Search for recipes..."
           class="search-input"
           value="{{ request.GET.q|default:'' }}"
-          onkeyup="filterRecipes()"
-        />
+          onkeyup="filterRecipes()"/>
         <span id="clear-search-btn" class="clear-search-btn"
-          ><i class="fas fa-times"></i
-        ></span>
+          ><i class="fas fa-times"></i></span>
       </div>
       <button type="submit" class="btn search-btn">Search</button>
     </form>
 
     <div class="quick-filters">
       {% if request.GET.category != 'veg' %}
-      <a href="{% url 'home' %}?category=veg" class="btn filter-btn veg-btn"
-        ><i class="fas fa-leaf"></i> Vegetarian Dishes</a
-      >
+      <a href="{% url 'home' %}?category=veg" class="btn filter-btn veg-btn"><i class="fas fa-leaf"></i> Vegetarian Dishes</a>
       {% endif %} {% if request.GET.category != 'non-veg' %}
-      <a
-        href="{% url 'home' %}?category=non-veg"
-        class="btn filter-btn non-veg-btn"
-        ><i class="fas fa-drumstick-bite"></i> Non-Vegetarian Dishes</a
-      >
+      <a href="{% url 'home' %}?category=non-veg" class="btn filter-btn non-veg-btn"><i class="fas fa-drumstick-bite"></i> Non-Vegetarian Dishes</a>
       {% endif %}
     </div>
   </div>
