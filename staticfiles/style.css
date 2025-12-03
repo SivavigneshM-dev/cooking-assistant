@@ -45,10 +45,8 @@
     h5 {
         color: var(--secondary-color);
         margin-bottom: 0.5em;
-        text-align: center;
-        font-size: 50px;
+        font-size: 1.25rem; 
     }
-
     .par{
         text-align: center;
     }
@@ -1419,7 +1417,7 @@
 
 .form-label-custom {
     font-weight: 600;
-    color: #333;
+    color: #f40707;
     font-size: 0.9rem;
     margin-bottom: 8px;
 }

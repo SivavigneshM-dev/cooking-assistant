@@ -6,21 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RecipeShare - {% block title %}{% endblock %}</title>    
     <link rel="stylesheet" href="{% static 'style.css' %}">    
-    <link rel="icon" type="image/png" href="{% static 'images/recipe-logo.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/Recipe-Logo1.png' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
-{% comment %} 
-We use a class on the body for auth pages to apply the specific background color
-{% endcomment %}
 <body class="{% if '/accounts/' in request.path %}auth-page-body{% endif %}">
 
 {% if '/accounts/login/' not in request.path and '/accounts/signup/' not in request.path %}
     <header class="navbar">
         <div class="logo">
             <a href="{% url 'home' %}" style="text-decoration: none; display: flex; align-items: center; color: inherit;">
-            <img src="{% static 'images/recipe-logo.png' %}" alt="RecipeShare" style="height: 50px; width: auto; margin-right: 10px;">
-            {% comment %} <span>RecipeShare</span> {% endcomment %}
+            <img src="{% static 'images/Recipe-Logo1.png' %}" alt="RecipeShare" style="height: 50px; width: auto; margin-right: 10px;">
         </a>
         </div>
         <nav>

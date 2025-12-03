@@ -23,81 +23,85 @@
 </head>
 <body>
 
-<div class="shopping-list-content">
+<div class="shopping-page-wrapper">
     <div class="container shopping-card-container">
-
-        <div class="shopping-header">
-            <div class="header-actions">
-                <form action="{% url 'add_custom_item' %}" method="POST" class="add-custom-form">
-                    {% csrf_token %}
-                    <input type="text" name="item_name" placeholder="Add custom item (e.g. Milk)..." required>
-                    <button type="submit" class="btn-add"><i class="fas fa-plus"></i></button>
-                </form>
-
-                {% if shopping_list_items %}
-                <a href="{% url 'clear_shopping_list' %}" class="btn-clear" onclick="return confirm('Are you sure you want to clear the entire list?');">
-                    <i class="fas fa-trash"></i> Clear All
-                </a>
-                {% endif %}
-            </div>
+        
+        <div class="header-top-bar">
+            <a href="{% url 'profile' %}" class="logo-v2">
+                <i class="fas fa-hat-chef"></i> ⬅️Profile
+            </a>
+            
+            <h1 class="shopping-main-title"><i class="fas fa-shopping-basket"></i> My Shopping List</h1>
+            
+            <div class="header-spacer-v2"></div>
         </div>
+        <div class="shopping-header-v2">
+            <form action="{% url 'add_custom_item' %}" method="POST" class="add-custom-form-v2">
+                {% csrf_token %}
+                <input type="text" name="item_name" placeholder="Add custom item (e.g. Milk, Eggs...)" required>
+                <button type="submit" class="btn-add-v2"><i class="fas fa-plus"></i> Add</button>
+            </form>
 
-        <div class="shopping-page-grid">
-            <div class="list-column">
-                <div class="column-header">
-                    <h2><i class="far fa-clipboard"></i> To Buy List ({{ shopping_list_items|length }})</h2>
+            {% if has_any_items %}
+            <a href="{% url 'clear_shopping_list' %}" class="btn-clear-all" onclick="return confirm('Are you sure you want to clear the entire list?');">
+                <i class="fas fa-trash-alt"></i> Clear All  </a>
+            {% endif %}
+        </div>
+        
+        {% if has_any_items %}
+        <div class="shopping-page-grid-v2">
+            
+            <div class="list-column-v2 to-buy-column">
+                <div class="column-header-v2">
+                    <h2><i class="far fa-clipboard"></i> To Buy ({{ to_buy_items|length }})</h2>
                 </div>
-                <div class="column-body">
-                    {% for item in shopping_list_items %}
-                        {% if not item.is_purchased %}
-                            <div class="shopping-item-v2">
-                                <a href="{% url 'toggle_purchased' item.id %}" class="check-circle-v2">
-                                    <i class="far fa-circle"></i>
-                                </a>
-                                <span class="item-name-v2">{{ item.name }}</span>
-                                <a href="{% url 'delete_shopping_item' item.id %}" class="btn-delete-item-v2" onclick="return confirm('Remove {{ item.name }} from the list?');">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
-                            </div>
+                <div class="column-body-v2">
+                    {% for item in to_buy_items %}
+                        <div class="shopping-item-v3">
+                            <a href="{% url 'toggle_purchased' item.id %}" class="check-action-v3" title="Mark as Purchased">
+                                <i class="far fa-circle"></i>
+                            </a>
+                            <span class="item-name-v3">{{ item.name }}</span>
+                            <a href="{% url 'delete_shopping_item' item.id %}" class="btn-delete-item-v3" onclick="return confirm('Remove {{ item.name }} from the list?');" title="Delete Item">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                    {% empty %}
+                        {% if purchased_items %}
+                            <p class="empty-column-message purchased-all-msg">All items purchased! You're ready to cook! 🎉</p>
+                        {% else %}
+                            <p class="empty-column-message">Start by adding your first ingredient above.</p>
                         {% endif %}
                     {% endfor %}
-
-                    {% if not shopping_list_items.list_not_purchased %}
-                    <p class="empty-column-message">All items purchased! Happy cooking!</p>
-                    {% endif %}
                 </div>
             </div>
 
-            <div class="purchased-column">
-                <div class="column-header">
-                    <h2><i class="fas fa-check-circle"></i> Purchased Items</h2>
-                    <a href="{% url 'clear_purchased' %}" class="btn-clear-purchased" onclick="return confirm('Are you sure you want to clear all purchased items?');">Clear Purchased</a>
+            <div class="list-column-v2 purchased-column-v2">
+                <div class="column-header-v2">
+                    <h2><i class="fas fa-check-circle"></i> Purchased Items ({{ purchased_items|length }})</h2>
+                    <a href="{% url 'clear_purchased' %}" class="btn-clear-purchased-v2" onclick="return confirm('Are you sure you want to clear all purchased items?');">Clear Purchased</a>
                 </div>
-                <div class="column-body">
-                    {% for item in shopping_list_items %}
-                        {% if item.is_purchased %}
-                            <div class="shopping-item-v2 purchased-v2">
-                                <a href="{% url 'toggle_purchased' item.id %}" class="check-circle-v2">
-                                    <i class="fas fa-check-circle"></i>
-                                </a>
-                                <span class="item-name-v2">{{ item.name }}</span>
-                                <a href="{% url 'delete_shopping_item' item.id %}" class="btn-delete-item-v2" onclick="return confirm('Remove {{ item.name }} from the list?');">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
-                            </div>
-                        {% endif %}
+                <div class="column-body-v2">
+                    {% for item in purchased_items %}
+                        <div class="shopping-item-v3 purchased-v3">
+                            <a href="{% url 'toggle_purchased' item.id %}" class="check-action-v3" title="Move back to To Buy">
+                                <i class="fas fa-check-circle"></i>
+                            </a>
+                            <span class="item-name-v3">{{ item.name }}</span>
+                            <a href="{% url 'delete_shopping_item' item.id %}" class="btn-delete-item-v3" onclick="return confirm('Remove {{ item.name }} from the list?');" title="Delete Item">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                    {% empty %}
+                        <p class="empty-column-message">Nothing purchased yet. Click a circle on the left to move it here!</p>
                     {% endfor %}
-
-                    {% if not shopping_list_items.list_purchased %}
-                    <p class="empty-column-message">Nothing purchased yet. Click an item to move it here!</p>
-                    {% endif %}
                 </div>
             </div>
         </div>
-        {% if not shopping_list_items %}
-        <div class="empty-state">
+        {% else %}
+        <div class="empty-state-v2">
             <i class="fas fa-carrot"></i>
-            <h3>Your basket is empty</h3>
+            <h3>Your list is empty</h3>
             <p>Go to recipes and click "Add to Shopping List" to get started!</p>
             <a href="/" class="btn sign-in-btn">Browse Recipes</a>
         </div>

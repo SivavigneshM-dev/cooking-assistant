@@ -13,8 +13,6 @@ from . models import UserProfile, Favorite, ShoppingListItem
 from recipes.models import Recipe, Ingredient, Instruction
 
 
-
-
 def signup_view(request):
     if request.method == 'POST':
         form = SimpleSignupForm(request.POST)
@@ -103,11 +101,36 @@ def favorites_list(request):
     context = {'recipes': recipes}
     return render(request, 'accounts/favorites.html', context)
 
+# @login_required
+# def shopping_list_view(request):
+#     items = ShoppingListItem.objects.filter(user=request.user).order_by('recipe__name', 'added_at')
+#     context = {'shopping_list_items': items, 'active_tab': 'shopping_list'}
+#     return render(request, 'accounts/shopping_list.html', context)
+
+
 @login_required
 def shopping_list_view(request):
-    items = ShoppingListItem.objects.filter(user=request.user).order_by('recipe__name', 'added_at')
-    context = {'shopping_list_items': items, 'active_tab': 'shopping_list'}
+    """
+    Retrieves and filters shopping list items into two separate lists 
+    (To Buy and Purchased) for easy display in the template.
+    """
+    all_items = ShoppingListItem.objects.filter(user=request.user)
+    
+    # 1. Items to Buy (is_purchased=False)
+    to_buy_items = all_items.filter(is_purchased=False).order_by('recipe__name', 'added_at')
+    
+    # 2. Purchased Items (is_purchased=True)
+    purchased_items = all_items.filter(is_purchased=True).order_by('-added_at') # Order by most recently purchased first
+    
+    context = {
+        'to_buy_items': to_buy_items,
+        'purchased_items': purchased_items,
+        'active_tab': 'shopping_list',
+        # Used for the overall empty state check at the bottom of the page
+        'has_any_items': all_items.exists(), 
+    }
     return render(request, 'accounts/shopping_list.html', context)
+
 
 @login_required
 @require_POST # <--- ADD THIS DECORATOR
@@ -131,6 +154,23 @@ def add_recipe_ingredients_to_list(request, recipe_id):
     messages.success(request, f"Successfully added {items_added} ingredients from '{recipe.name}' to your shopping list.")
     return redirect('shopping_list')
     # return redirect('my_recipes') 
+
+@login_required
+@require_POST 
+def clear_purchased_items(request):
+    purchased_items = ShoppingListItem.objects.filter(
+        user=request.user, 
+        is_purchased=True
+    )
+    count = purchased_items.count()
+    purchased_items.delete()
+    
+    if count > 0:
+        messages.success(request, f'Successfully cleared {count} purchased items!')
+    else:
+        messages.info(request, 'No purchased items to clear.')
+            
+    return redirect('shopping_list')
 
 @login_required
 def add_custom_item(request):

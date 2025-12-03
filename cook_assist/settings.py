@@ -2,26 +2,47 @@ import os
 from pathlib import Path
 
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://cooking-assistant-h2w8.onrender.com',
-]
+# ====================================================================
+# 🔄 LOCAL DEV MODE - SWITCH 1: UNCOMMENT THIS BLOCK FOR LOCAL RUNNING
+# ====================================================================
+IS_LOCAL_DEV = True
+if 'IS_LOCAL_DEV' in locals() and IS_LOCAL_DEV:
+    # 1. Set DEBUG to True for detailed errors and static file handling
+    DEBUG = True
+    # 2. Allow local hosts
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+    # 3. Allow local origin for CSRF checks
+    CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
+# ====================================================================
+
+
+# ====================================================================
+# ⚠️ RENDER PROD MODE - CSRF_TRUSTED_ORIGINS: COMMENT OUT for local
+# ====================================================================
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://cooking-assistant-h2w8.onrender.com',
+# ]
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'default-insecure-key')
 
-# DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
-DEBUG = False
+# ====================================================================
+# ⚠️ RENDER PROD MODE - DEBUG: COMMENT OUT for local
+# ====================================================================
+# DEBUG = False
 
-# ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-ALLOWED_HOSTS = ['cooking-assistant-h2w8.onrender.com']
+# ====================================================================
+# ⚠️ RENDER PROD MODE - ALLOWED_HOSTS: COMMENT OUT for local
+# ====================================================================
+# ALLOWED_HOSTS = ['cooking-assistant-h2w8.onrender.com']
 
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-    ALLOWED_HOSTS.append('.onrender.com')
+# if RENDER_EXTERNAL_HOSTNAME:
+#     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+#     ALLOWED_HOSTS.append('.onrender.com')
 
 
 INSTALLED_APPS = [
