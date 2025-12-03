@@ -20,11 +20,9 @@
         </a>
         </div>
         <nav>
-
             {% if request.path != '/' %}
             <a href="{% url 'home' %}" class="nav-item">Home</a> 
             {% endif %}
-
             <a href="{% url 'home' %}?category=veg" class="nav-item">Vegetarian</a>
             <a href="{% url 'home' %}?category=non-veg" class="nav-item">Non-Vegetarian</a>
             <a href="{% url 'home' %}" class="nav-item"><i class="fas fa-search"></i> Search</a>
