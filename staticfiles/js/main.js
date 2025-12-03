@@ -179,3 +179,26 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const navbar = document.querySelector('.navbar');
+    // Assuming you add a toggle button with the class 'menu-toggle' to your base.html
+    const menuToggle = document.querySelector('.menu-toggle'); 
+    
+    if (menuToggle && navbar) {
+        menuToggle.addEventListener('click', function() {
+            navbar.classList.toggle('open');
+        });
+        
+        // Optional: Close menu when a link is clicked
+        const navLinks = navbar.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navbar.classList.remove('open');
+                }
+            });
+        });
+    }
+});
