@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'review.css' %}" />
+    <title>RecipeShare — Reviews</title>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <!-- BACK button -->
+          <button
+            class="back-btn"
+            onclick="history.back()"
+            aria-label="Go back"
+          >
+            ← Back
+          </button>
+          <h1>RecipeShare — User Reviews</h1>
+        </div>
+        <div class="small">
+          Share your experience with recipes, videos or photos.
+        </div>
+      </header>
+
+      <section class="summary">
+        <div>
+          <div class="avg">4.6</div>
+          <div class="avg-small">Based on <strong>1,248</strong> reviews</div>
+        </div>
+        <div class="bars">
+          <div class="bar">
+            <div class="label">5 ★</div>
+            <div class="progress" aria-hidden="true">
+              <i style="width: 73%"></i>
+            </div>
+          </div>
+          <div class="bar">
+            <div class="label">4 ★</div>
+            <div class="progress"><i style="width: 18%"></i></div>
+          </div>
+          <div class="bar">
+            <div class="label">3 ★</div>
+            <div class="progress"><i style="width: 6%"></i></div>
+          </div>
+          <div class="bar">
+            <div class="label">2 ★</div>
+            <div class="progress"><i style="width: 2%"></i></div>
+          </div>
+          <div class="bar">
+            <div class="label">1 ★</div>
+            <div class="progress"><i style="width: 1%"></i></div>
+          </div>
+        </div>
+        <div style="margin-left: auto; text-align: right">
+          <div style="font-weight: 600">Verified cooks ❤️</div>
+          <div style="color: var(--muted); font-size: 13px">
+            Top contributors highlighted
+          </div>
+        </div>
+      </section>
+
+      <div class="controls">
+        <input
+          type="search"
+          id="search"
+          placeholder="Search reviews, recipes or user"
+        />
+        <select id="filter">
+          <option value="recent">Most recent</option>
+          <option value="highest">Highest rating</option>
+          <option value="lowest">Lowest rating</option>
+          <option value="withmedia">With photos & videos</option>
+        </select>
+        <button class="btn" onclick="openModal()">Write a Review</button>
+      </div>
+
+      <main class="grid" id="reviews">
+        <!-- demo cards -->
+        <article
+          class="card"
+          data-review-id="r_demo_1"
+          data-user-id="demo_user"
+          data-demo="true"
+        >
+          <div class="avatar">RK</div>
+          <div class="meta">
+            <h3>
+              R. Kannan
+              <span style="color: var(--muted); font-size: 13px"
+                >• 2 days ago</span
+              >
+            </h3>
+            <div class="stars">★★★★☆</div>
+            <div class="text">
+              Tried the Chettinad curry — amazing depth of flavor. The assistant
+              suggested a spice tweak that worked perfectly.
+            </div>
+            <div class="media-row">
+              <img
+                src="https://images.unsplash.com/photo-1543352634-3273b3d6b2c9?w=800&q=60"
+                alt="dish"
+              />
+            </div>
+          </div>
+          <button class="more-btn" aria-label="More">⋯</button>
+          <div class="menu">
+            <button class="edit">Edit</button
+            ><button class="delete">Delete</button>
+          </div>
+        </article>
+
+        <article
+          class="card"
+          data-review-id="r_demo_2"
+          data-user-id="demo_user"
+          data-demo="true"
+        >
+          <div class="avatar">PS</div>
+          <div class="meta">
+            <h3>Priya S <span class="time">• 1 week ago</span></h3>
+            <div class="stars">★★★★★</div>
+            <div class="text">
+              Upload facility for step-by-step cooking video made it so much
+              easier. Highly recommend adding timestamps for long videos.
+            </div>
+          </div>
+          <button class="more-btn" aria-label="More">⋯</button>
+          <div class="menu">
+            <button class="edit">Edit</button
+            ><button class="delete">Delete</button>
+          </div>
+        </article>
+
+        <article
+          class="card"
+          data-review-id="r_demo_3"
+          data-user-id="demo_user"
+          data-demo="true"
+        >
+          <div class="avatar">MK</div>
+          <div class="meta">
+            <h3>Manoj K <span class="time">• 3 weeks ago</span></h3>
+            <div class="stars">★★★☆☆</div>
+            <div class="text">
+              Good suggestions, but the ingredient quantities were slightly off
+              for family-size servings.
+            </div>
+          </div>
+          <button class="more-btn" aria-label="More">⋯</button>
+          <div class="menu">
+            <button class="edit">Edit</button
+            ><button class="delete">Delete</button>
+          </div>
+        </article>
+      </main>
+
+      <footer>© 2025 RecipeShare. All rights reserved.</footer>
+    </div>
+
+    <!-- Floating button bottom center -->
+    <div class="fab-wrap" aria-hidden="false">
+      <!-- outer button stays stable; inner span handles visual scale -->
+      <button class="fab" aria-label="Write a review" id="fab">
+        <span class="fab-inner">✦</span>
+      </button>
+      <div class="star-burst" id="starBurst" aria-hidden="true"></div>
+    </div>
+
+    <!-- Modal overlay -->
+    <div
+      class="overlay"
+      id="overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+    >
+      <div class="modal" role="document">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <h2 id="modalTitle">Share your review</h2>
+          <button class="btn secondary" onclick="closeModal()">Close</button>
+        </div>
+        <div class="rating-input" aria-label="Rating">
+          <div id="starButtons">
+            <button class="star-btn" data-value="1" aria-label="1 star">
+              ☆
+            </button>
+            <button class="star-btn" data-value="2" aria-label="2 stars">
+              ☆
+            </button>
+            <button class="star-btn" data-value="3" aria-label="3 stars">
+              ☆
+            </button>
+            <button class="star-btn" data-value="4" aria-label="4 stars">
+              ☆
+            </button>
+            <button class="star-btn" data-value="5" aria-label="5 stars">
+              ☆
+            </button>
+          </div>
+          <div style="margin-left: auto; color: var(--muted)" id="ratingValue">
+            0/5
+          </div>
+        </div>
+        <textarea
+          id="reviewText"
+          placeholder="What did you like? Any tips for others? (2000 chars max)"
+        ></textarea>
+
+        <div class="row">
+          <label class="uploader" for="mediaInput"
+            >Click to upload photo or short video (max 50MB)
+            <input type="file" id="mediaInput" accept="image/*,video/*" />
+          </label>
+          <div style="width: 120px; text-align: right">
+            <button class="btn secondary" onclick="attachLocation()">
+              Add location
+            </button>
+            <div style="height: 8px"></div>
+            <button class="btn" id="submitBtn">Publish</button>
+          </div>
+        </div>
+
+        <div class="preview" id="preview"></div>
+      </div>
+    </div>
+
+    <script>
+      // Simulated auth & config
+      let currentUserId = "user_123"; // change to null to test logged-out
+      const allowDemo = false;
+
+      // Elements
+      const overlay = document.getElementById("overlay");
+      const fab = document.getElementById("fab");
+      const fileInput = document.getElementById("mediaInput");
+      const preview = document.getElementById("preview");
+      const ratingValue = document.getElementById("ratingValue");
+      const starButtons = document.querySelectorAll(".star-btn");
+      const reviewsGrid = document.getElementById("reviews");
+      const submitBtn = document.getElementById("submitBtn");
+      const modalTitle = document.getElementById("modalTitle");
+      const starBurstWrap = document.getElementById("starBurst");
+
+      let currentRating = 0;
+      let editingReviewId = null;
+
+      function openModal(editing = false) {
+        overlay.style.display = "flex";
+        overlay.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+        if (editing) modalTitle.textContent = "Edit your review";
+        else modalTitle.textContent = "Share your review";
+      }
+      function closeModal() {
+        overlay.style.display = "none";
+        overlay.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "auto";
+        editingReviewId = null;
+        resetModal();
+      }
+
+      // FAB click triggers burst then opens modal
+      fab.addEventListener("click", () => {
+        tinyBurst();
+        if (!currentUserId) {
+          alert("Please log in to write a review.");
+          return;
+        }
+        openModal(false);
+      });
+
+      // Stars logic
+      starButtons.forEach((btn) => {
+        btn.addEventListener("mouseenter", () => highlight(btn.dataset.value));
+        btn.addEventListener("click", () => setRating(btn.dataset.value));
+      });
+      overlay.addEventListener("mouseleave", () => highlight(currentRating));
+      function highlight(n) {
+        starButtons.forEach(
+          (b) => (b.textContent = b.dataset.value <= n ? "★" : "☆")
+        );
+      }
+      function setRating(n) {
+        currentRating = Number(n);
+        highlight(n);
+        ratingValue.textContent = n + "/5";
+      }
+
+      // File preview
+      fileInput.addEventListener("change", (e) => {
+        preview.innerHTML = "";
+        const f = e.target.files[0];
+        if (!f) return;
+        if (f.size > 50 * 1024 * 1024) {
+          alert("File is too large (max 50MB)");
+          return;
+        }
+        const url = URL.createObjectURL(f);
+        if (f.type.startsWith("image/")) {
+          const img = document.createElement("img");
+          img.src = url;
+          img.alt = "uploaded photo";
+          preview.appendChild(img);
+        } else if (f.type.startsWith("video/")) {
+          const vid = document.createElement("video");
+          vid.src = url;
+          vid.controls = true;
+          preview.appendChild(vid);
+        }
+      });
+
+      function resetModal() {
+        document.getElementById("reviewText").value = "";
+        fileInput.value = "";
+        preview.innerHTML = "";
+        setRating(0);
+        submitBtn.textContent = "Publish";
+      }
+
+      function removeDemoCardsIfNeeded() {
+        if (!allowDemo) {
+          const demos = document.querySelectorAll('[data-demo="true"]');
+          demos.forEach((d) => d.remove());
+        }
+      }
+
+      function renderMenuForCards() {
+        const cards = document.querySelectorAll(".card");
+        cards.forEach((card) => {
+          const moreBtn = card.querySelector(".more-btn");
+          const menu = card.querySelector(".menu");
+          const ownerId = card.dataset.userId || null;
+          if (currentUserId && ownerId === currentUserId) {
+            moreBtn.style.display = "block";
+          } else {
+            moreBtn.style.display = "none";
+          }
+          moreBtn.onclick = (e) => {
+            e.stopPropagation();
+            closeAllMenus();
+            menu.style.display = "block";
+          };
+          const editBtn = menu.querySelector(".edit");
+          const delBtn = menu.querySelector(".delete");
+          if (editBtn)
+            editBtn.onclick = () => {
+              editReview(card.dataset.reviewId);
+            };
+          if (delBtn)
+            delBtn.onclick = () => {
+              deleteReview(card.dataset.reviewId);
+            };
+        });
+        document.addEventListener("click", closeAllMenus);
+      }
+      function closeAllMenus() {
+        document
+          .querySelectorAll(".menu")
+          .forEach((m) => (m.style.display = "none"));
+      }
+
+      function deleteReview(reviewId) {
+        if (!confirm("Delete this review? This cannot be undone.")) return;
+        const card = document.querySelector(`[data-review-id="${reviewId}"]`);
+        if (card) card.remove();
+        toast("Review deleted");
+      }
+
+      function editReview(reviewId) {
+        const card = document.querySelector(`[data-review-id="${reviewId}"]`);
+        if (!card) return alert("Review not found");
+        const text = card.querySelector(".text")?.textContent || "";
+        const stars = card.querySelector(".stars")?.textContent || "";
+        const rating = (stars.match(/★/g) || []).length;
+        document.getElementById("reviewText").value = text.trim();
+        setRating(rating);
+        editingReviewId = reviewId;
+        submitBtn.textContent = "Save changes";
+        openModal(true);
+      }
+
+      submitBtn.addEventListener("click", () => {
+        if (!currentUserId) {
+          alert("Please log in to post a review.");
+          return;
+        }
+        const text = document.getElementById("reviewText").value.trim();
+        if (currentRating === 0) return alert("Please give a rating.");
+        if (text.length < 10)
+          return alert("Please add a few more details to help others.");
+
+        if (editingReviewId) {
+          const card = document.querySelector(
+            `[data-review-id="${editingReviewId}"]`
+          );
+          if (card) {
+            card.querySelector(".stars").textContent =
+              "★".repeat(currentRating) + "☆".repeat(5 - currentRating);
+            card.querySelector(".text").textContent = text;
+            const timeEl = card.querySelector(".time");
+            if (timeEl) timeEl.textContent = "• Just now";
+          }
+          toast("Review updated");
+          closeModal();
+          return;
+        }
+
+        const id = "r_" + Date.now();
+        const card = document.createElement("article");
+        card.className = "card";
+        card.dataset.reviewId = id;
+        card.dataset.userId = currentUserId;
+        card.innerHTML = `
+        <div class="avatar">${initialsFor(currentUserId)}</div>
+        <div class="meta">
+          <h3>You <span class="time">• Just now</span></h3>
+          <div class="stars">${"★".repeat(currentRating)}${"☆".repeat(
+          5 - currentRating
+        )}</div>
+          <div class="text">${escapeHtml(text)}</div>
+        </div>
+        <button class="more-btn" aria-label="More">⋯</button>
+        <div class="menu"><button class="edit">Edit</button><button class="delete">Delete</button></div>
+      `;
+        reviewsGrid.insertBefore(card, reviewsGrid.firstChild);
+        resetModal();
+        closeModal();
+        renderMenuForCards();
+        toast("Review published — thanks!");
+      });
+
+      function initialsFor(userId) {
+        if (!userId) return "ME";
+        const parts = userId.split("_");
+        return (parts[1] || parts[0]).toUpperCase().slice(0, 2);
+      }
+      function escapeHtml(s) {
+        return s
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;");
+      }
+      function toast(msg) {
+        const t = document.createElement("div");
+        t.textContent = msg;
+        t.style.cssText =
+          "position:fixed;right:20px;bottom:100px;background:#222;color:#fff;padding:10px 14px;border-radius:8px;z-index:2000;box-shadow:0 10px 30px rgba(0,0,0,0.3)";
+        document.body.appendChild(t);
+        setTimeout(() => (t.style.opacity = 0), 2000);
+        setTimeout(() => t.remove(), 2800);
+      }
+      function attachLocation() {
+        alert("Location attached (demo)");
+      }
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
+      });
+
+      // Tiny star burst animation
+      function tinyBurst() {
+        if (!starBurstWrap) return;
+        const count = 7;
+        for (let i = 0; i < count; i++) {
+          const star = document.createElement("div");
+          star.className = "star";
+          star.textContent = "✦";
+          const angle = Math.random() * Math.PI * 2;
+          const distance = 30 + Math.random() * 40;
+          const x = Math.round(Math.cos(angle) * distance);
+          const y = Math.round(Math.sin(angle) * distance) * -1;
+          star.style.setProperty("--x", `${x}px`);
+          star.style.setProperty("--y", `${y}px`);
+          star.style.animationDelay = Math.random() * 80 + "ms";
+          starBurstWrap.appendChild(star);
+          setTimeout(() => star.remove(), 700);
+        }
+      }
+
+      (function init() {
+        removeDemoCardsIfNeeded();
+        renderMenuForCards();
+      })();
+    </script>
+  </body>
+</html>

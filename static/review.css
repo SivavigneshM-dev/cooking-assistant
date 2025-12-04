@@ -1,0 +1,564 @@
+:root {
+        --bg: #f7f7f7;
+        --card: #fff;
+        --muted: #888;
+        --accent: #ff5722;
+        --accent-2: #ff7043;
+        --danger: #e53935;
+        --glass: rgba(255, 255, 255, 0.6);
+        --shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        --maxw: 1100px;
+        font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial;
+      }
+      /* Reset & base */
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: linear-gradient(180deg, #fbfbfb 0%, #f2f2f2 100%);
+        color: #222;
+        -webkit-font-smoothing: antialiased;
+      }
+      .container {
+        max-width: var(--maxw);
+        margin: 48px auto;
+        padding: 0 20px;
+      }
+
+      /* Header - desktop first, mobile refinements later */
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        gap: 12px;
+      }
+      header .left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 0 0 auto;
+      }
+      header h1 {
+        margin: 0;
+        font-size: 20px;
+        flex: 1;
+        text-align: left;
+      }
+
+      /* Back button */
+      .back-btn {
+        margin-right: 0;
+        padding: 8px 12px;
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        transition: background 160ms ease, transform 120ms ease;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .back-btn:hover {
+        background: #f6f6f6;
+        transform: translateY(-1px);
+      }
+
+      /* Rating summary */
+      .summary {
+        display: flex;
+        gap: 28px;
+        align-items: center;
+        background: var(--card);
+        padding: 28px;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        width: 100%;
+      }
+      .avg {
+        font-size: 48px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .avg-small {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .bars {
+        width: 360px;
+      }
+      .bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+      .bar .label {
+        width: 50px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .bar .progress {
+        flex: 1;
+        height: 10px;
+        background: #eee;
+        border-radius: 999px;
+        overflow: hidden;
+      }
+      .bar .progress > i {
+        display: block;
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      }
+
+      /* Controls */
+      .controls {
+        display: flex;
+        gap: 10px;
+        margin: 18px 0;
+        flex-wrap: wrap;
+      }
+      .controls input[type="search"],
+      .controls select {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #ececec;
+        background: #fff;
+      }
+
+      /* Reviews grid */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+        margin-top: 18px;
+      }
+      .card {
+        background: var(--card);
+        padding: 18px;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        display: flex;
+        gap: 14px;
+        position: relative;
+        align-items: flex-start;
+      }
+      .avatar {
+        flex: 0 0 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ffd3b6, #ff9a76);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 700;
+      }
+      .meta {
+        flex: 1;
+      }
+      .meta h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+      .meta .time {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .stars {
+        color: var(--accent);
+        margin: 8px 0;
+      }
+      .text {
+        color: #333;
+        line-height: 1.5;
+      }
+      .media-row {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .media-row img,
+      .media-row video {
+        height: 92px;
+        border-radius: 8px;
+        object-fit: cover;
+        cursor: pointer;
+      }
+
+      /* card menu (three dots) */
+      .more-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: transparent;
+        border: 0;
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 18px;
+        line-height: 1;
+      }
+      .menu {
+        position: absolute;
+        top: 44px;
+        right: 12px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        display: none;
+        z-index: 40;
+      }
+      .menu button {
+        display: block;
+        padding: 8px 12px;
+        border: 0;
+        background: transparent;
+        width: 160px;
+        text-align: left;
+        cursor: pointer;
+      }
+      .menu button:hover {
+        background: #f7f7f7;
+      }
+
+      /* Footer */
+      footer {
+        margin-top: 34px;
+        text-align: center;
+        color: var(--card);
+        background: linear-gradient(90deg, #d32f2f, #c62828);
+        padding: 18px;
+        border-radius: 8px;
+      }
+
+      /* Floating review button bottom center */
+      .fab-wrap {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 28px;
+        z-index: 1200;
+        pointer-events: none;
+      }
+      .fab {
+        width: 70px;
+        height: 70px;
+        border-radius: 999px;
+        background: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 22px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        border: 6px solid rgba(255, 255, 255, 0.12);
+        cursor: pointer;
+        pointer-events: auto;
+        transform: none;
+      }
+      .fab:focus {
+        outline: none;
+        box-shadow: 0 0 12px rgba(255, 87, 34, 0.35);
+      }
+
+      /* Inner element used for visual scaling (fixes jumping) */
+      .fab-inner {
+        display: inline-block;
+        transition: transform 120ms cubic-bezier(0.2, 0.9, 0.2, 1),
+          box-shadow 120ms ease;
+        will-change: transform;
+      }
+      /* When button pressed, scale inner content - outer button stays put */
+      .fab:active .fab-inner {
+        transform: scale(0.95);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18) inset;
+      }
+
+      /* Star burst container (added) */
+      .star-burst {
+        position: absolute;
+        bottom: 36px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 1px;
+        height: 1px;
+        pointer-events: none;
+        overflow: visible;
+        z-index: 1250;
+      }
+      .star {
+        position: absolute;
+        font-size: 14px;
+        color: #ffd27a;
+        opacity: 0;
+        transform-origin: center;
+        animation: burst 600ms ease-out forwards;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+      }
+      @keyframes burst {
+        0% {
+          transform: translate(0, 0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(var(--x), var(--y)) scale(0.35);
+          opacity: 0;
+        }
+      }
+
+      /* Modal */
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 15, 15, 0.45);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 1300;
+      }
+      .modal {
+        width: 100%;
+        max-width: 760px;
+        background: var(--card);
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+      }
+      .modal h2 {
+        margin: 0 0 8px;
+      }
+      .rating-input {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        margin: 8px 0;
+      }
+      .rating-input button {
+        background: #fff;
+        border: 1px solid #eee;
+        padding: 8px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      .rating-input .star {
+        font-size: 22px;
+        color: #ddd;
+      }
+      textarea {
+        width: 100%;
+        min-height: 110px;
+        padding: 12px;
+        border: 1px solid #ececec;
+        border-radius: 8px;
+      }
+      .modal .row {
+        display: flex;
+        gap: 12px;
+        margin-top: 12px;
+        align-items: center;
+      }
+      .uploader {
+        flex: 1;
+        border: 1px dashed #eee;
+        padding: 12px;
+        border-radius: 8px;
+        text-align: center;
+      }
+      .uploader input {
+        display: none;
+      }
+      .preview {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+      .preview img,
+      .preview video {
+        height: 110px;
+        border-radius: 8px;
+      }
+
+      /* Utility small centered container if user uses .small */
+      .small {
+        display: block;
+        text-align: center;
+        margin: 0 auto;
+      }
+
+      /* Responsive adjustments */
+      /* Tablet and below */
+      @media (max-width: 860px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .bars {
+          width: 100%;
+        }
+        .summary {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 20px;
+          gap: 14px;
+        }
+        .avg {
+          font-size: 40px;
+        }
+        .card {
+          padding: 16px;
+        }
+        .media-row img,
+        .media-row video {
+          height: 78px;
+        }
+      }
+
+      /* Mobile: tighten spacing and change header behavior */
+      @media (max-width: 480px) {
+        .container {
+          padding: 0 14px;
+          margin: 20px auto;
+        }
+        header {
+          align-items: center;
+        }
+        /* header layout:
+     left group contains back button,
+     title moved to the right but text left-aligned inside its available space */
+        header .left {
+          flex: 0 0 auto;
+        }
+        header h1 {
+          font-size: 15px;
+          flex: 1 1 auto;
+          margin-left: auto;
+          text-align: left;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          padding-left: 8px;
+        }
+        .back-btn {
+          padding: 8px 10px;
+          font-size: 13px;
+          border-radius: 10px;
+        }
+        /* Make header elements touch-friendly */
+        .back-btn,
+        header h1 {
+          touch-action: manipulation;
+        }
+
+        /* Summary card becomes full width stacked and centered */
+        .summary {
+          padding: 16px;
+          border-radius: 10px;
+          gap: 12px;
+        }
+        .avg {
+          font-size: 34px;
+        }
+        .bars {
+          width: 100%;
+        }
+        .bar .label {
+          width: 44px;
+          font-size: 12px;
+        }
+        .bar .progress {
+          height: 8px;
+        }
+        .avg-small {
+          font-size: 12px;
+        }
+
+        /* Grid single column and cards full width */
+        .grid {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        .card {
+          flex-direction: row;
+          gap: 12px;
+          padding: 14px;
+          border-radius: 10px;
+        }
+        .avatar {
+          flex: 0 0 48px;
+          height: 48px;
+          font-size: 14px;
+        }
+        .meta h3 {
+          font-size: 15px;
+        }
+        .meta .time {
+          font-size: 12px;
+        }
+
+        /* Media sizes */
+        .media-row img,
+        .media-row video {
+          height: 72px;
+          border-radius: 8px;
+        }
+
+        /* More button slightly bigger for touch */
+        .more-btn {
+          padding: 12px;
+          top: 10px;
+          right: 10px;
+        }
+
+        /* Fab smaller and raised a bit for thumb-reach */
+        .fab {
+          width: 62px;
+          height: 62px;
+          border-width: 5px;
+          bottom: 20px;
+        }
+        .fab-inner {
+          font-size: 20px;
+        }
+
+        /* Star burst scale down */
+        .star {
+          font-size: 12px;
+        }
+
+        /* Modal full-screen friendly */
+        .modal {
+          max-width: 95%;
+          padding: 16px;
+          border-radius: 10px;
+        }
+        .preview img,
+        .preview video {
+          height: 88px;
+        }
+
+        /* Ensure uploader / preview wrap nicely */
+        .uploader {
+          padding: 10px;
+        }
+
+        /* Make menu full-bleed on tiny screens for better tap targets */
+        .menu {
+          right: 8px;
+          left: auto;
+        }
+      }
+
+      /* Small accessibility improvements */
+      .back-btn:focus,
+      .btn:focus,
+      .more-btn:focus {
+        outline: 3px solid rgba(255, 87, 34, 0.12);
+        outline-offset: 2px;
+      }

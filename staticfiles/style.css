@@ -1857,7 +1857,7 @@
 /* Two-Column Grid Layout */
 .shopping-page-grid-v2 {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    grid-template-columns: 1fr 1fr; 
     gap: 30px;
 }
 
@@ -1899,7 +1899,6 @@
     color: #f44336;
 }
 
-/* Individual Shopping Item */
 .shopping-item-v3 {
     display: flex;
     align-items: center;
@@ -1944,21 +1943,20 @@
     color: #f44336;
 }
 
-/* Purchased Item Styling (Struck-Out) */
 .shopping-item-v3.purchased-v3 .item-name-v3 {
     text-decoration: line-through;
     color: #999;
 }
 
 .shopping-item-v3.purchased-v3 .check-action-v3 {
-    color: #28a745; /* Green checkmark */
+    color: #28a745; 
 }
 
 .shopping-item-v3.purchased-v3:hover .check-action-v3 {
     color: #1e7e34;
 }
 
-/* Empty State Messages */
+
 .empty-column-message {
     text-align: center;
     padding: 20px;
@@ -1972,7 +1970,6 @@
     font-weight: bold;
 }
 
-/* Empty Full List State (Visible when shopping_list_items is empty) */
 .empty-state-v2 {
     text-align: center;
     padding: 50px 20px;
@@ -1980,7 +1977,7 @@
 
 .empty-state-v2 i {
     font-size: 4em;
-    color: #ffb74d; /* Light orange carrot icon */
+    color: #ffb74d; 
     margin-bottom: 20px;
 }
 
@@ -2064,68 +2061,60 @@
     }
     
     .navbar .auth-buttons {
-        display: none; /* Hide desktop auth buttons for a cleaner look */
+        display: none; 
     }
-
-    /* Create the hamburger icon (if not already in base.html) */
     .menu-toggle {
-        display: block; /* Show the toggle button */
+        display: block; 
         font-size: 1.5em;
         cursor: pointer;
         padding: 5px;
         color: var(--secondary-color);
     }
     
-    /* Simulate the "open" state - you'd toggle this class with JavaScript */
     .navbar.open nav {
-        display: flex; /* Show the menu when the 'open' class is applied */
+        display: flex; 
     }
-    
-    /* Make the Navbar display correctly when it has content and toggle */
     .navbar {
-        flex-direction: row; /* Keep logo and toggle on one row */
+        flex-direction: row; 
         justify-content: space-between;
         align-items: center;
-        padding: 10px 5%; /* Adjust padding for mobile */
+        padding: 10px 5%; 
     }
 }
 
-/* Ensure the menu-toggle is hidden on desktop */
 .menu-toggle {
     display: none; 
 }
 
 @media screen and (max-width: 600px) {
-    /* 1. Hero Section */
     .hero-section {
-        padding: 40px 0; /* Reduced padding */
+        padding: 40px 0;
     }
 
-    /* 2. Search Form: Stack Input and Button */
     .main-search-form {
         flex-direction: column; 
-        gap: 10px; /* Space between input and button */
+        gap: 10px; 
         width: 90%;
         max-width: none;
         margin: 0 auto 30px auto;
     }
 
     .search-input-wrapper {
-        width: 100%; /* Make input wrapper full width */
+        width: 100%; 
         max-width: none;
     }
     
     .search-input-wrapper .search-input {
-        border-radius: 8px; /* Full radius since the button is stacked */
+        border-radius: 8px;
         width: 100%;
-        padding: 12px 20px; /* Slightly smaller padding */
-        font-size: 16px; /* Important for mobile accessibility (prevents zoom) */
+        padding: 12px 20px; 
+        font-size: 16px; 
     }
 
     .search-btn {
-        border-radius: 8px; /* Full radius */
-        width: 100%; /* Full width button */
-        padding: 12px 30px; /* Larger tap area */
+        border-radius: 8px; 
+        width: 100%; 
+        padding: 12px 30px; 
         font-size: 16px;
     }
 
@@ -2190,8 +2179,6 @@
     .mission-section p {
         font-size: 16px; /* Ensure body text is at least 16px */
     }
-
-    /* 3. Value Cards: Stack them vertically */
     .values-grid {
         flex-direction: column; /* Stack vertically */
         gap: 15px;
@@ -2225,10 +2212,9 @@
     }
     
     .offer-card p {
-        font-size: 16px; /* Ensure body text is at least 16px */
+        font-size: 16px; 
     }
 
-    /* 5. Contact CTA */
     .about-contact-section {
         margin-bottom: 40px;
     }
@@ -2252,9 +2238,8 @@
 }
 
 @media screen and (max-width: 480px) {
-    /* General Font Size Compliance */
     body {
-        font-size: 16px; /* Base font size for better readability and to prevent zoom */
+        font-size: 16px; 
     }
     
     h1, .discover-title { 
@@ -2264,18 +2249,58 @@
     h2, .featured-title { 
         font-size: 20px; 
     }
-    
-    /* Ensure all text-based elements are large enough for tap target */
+
     .btn, .navbar nav a, .filter-btn, .search-btn {
         font-size: 16px; 
     }
     
     main {
-        padding: 0 15px; /* Add general side padding */
+        padding: 0 15px; 
     }
 
-    /* Footer: Remove negative margins if they exist to prevent horizontal scroll */
     footer {
         padding: 20px 15px;
     }
+}
+
+
+@media screen and (max-width: 992px) {
+
+    .discover-title {
+     font-size: 2em;
+    }
+
+    .search-input {
+    width: 70%;
+    }
+
+    .recipe-image {
+        height: 300px; 
+    }
+    .left-panel {
+        flex: 0 0 45%; /* Image panel takes 45% */
+    }
+    .right-panel {
+        flex: 1; /* Other content takes the rest */
+    }
+}
+
+@media (max-width: 767.98px) {
+    
+    .recipe-image {
+        width: 100%; /* <<-- Set image to full width */
+        height: 250px; /* Reduced height for better mobile viewing */
+        border-radius: 10px; /* Reduced border radius */
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .recipe-image {
+        height: 250px; 
+    }
+
+    .ingredients-container ul li {
+        font-size: 90px;
+    }
+
 }

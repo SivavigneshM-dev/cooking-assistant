@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse # <--- Added this
+from django.http import JsonResponse 
 from .forms import RecipeForm
 from .models import Recipe, Ingredient 
 from accounts.models import Favorite
 from accounts.models import ShoppingListItem
+from django.http import JsonResponse
+from django.db.models import Avg, Count
+from . import models
 
 
 def home(request):
@@ -185,3 +188,35 @@ def toggle_shopping_item_purchased(request, item_id):
     item.is_purchased = not item.is_purchased
     item.save()
     return redirect('shopping_list')
+
+@login_required
+def review_page(request):
+    """
+    Renders the 'review.html' template.
+    Ensure 'review.html' is located in 'recipes/templates/recipes/' 
+    or just 'recipes/templates/'.
+    """
+    return render(request, 'recipes/review.html', {})
+
+
+
+def recipe_rating_summary(request, recipe_id):
+    recipe = get_object_or_404(models.Recipe, id=recipe_id)
+    qs = recipe.reviews.filter(is_deleted=False)
+
+
+    # counts
+    counts = qs.values("rating").annotate(c=Count("rating"))
+    counter = {1:0,2:0,3:0,4:0,5:0}
+
+    for item in counts:
+        counter[item["rating"]] = item["c"]
+
+    total = qs.count()
+    avg = qs.aggregate(a=Avg("rating"))["a"] or 0
+
+    return JsonResponse({
+        "avg": round(avg, 2),
+        "total": total,
+        "stars": counter
+    })

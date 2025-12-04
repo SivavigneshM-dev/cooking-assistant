@@ -34,6 +34,9 @@ class ShoppingListItem(models.Model):
     is_purchased = models.BooleanField(default=False)
     added_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ('user', 'name')
+
     def __str__(self):
         return f"{self.quantity} {self.unit} {self.name}"
 

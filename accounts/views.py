@@ -101,13 +101,6 @@ def favorites_list(request):
     context = {'recipes': recipes}
     return render(request, 'accounts/favorites.html', context)
 
-# @login_required
-# def shopping_list_view(request):
-#     items = ShoppingListItem.objects.filter(user=request.user).order_by('recipe__name', 'added_at')
-#     context = {'shopping_list_items': items, 'active_tab': 'shopping_list'}
-#     return render(request, 'accounts/shopping_list.html', context)
-
-
 @login_required
 def shopping_list_view(request):
     """
@@ -133,27 +126,52 @@ def shopping_list_view(request):
 
 
 @login_required
-@require_POST # <--- ADD THIS DECORATOR
+@require_POST # Ensure only POST requests are processed
 def add_recipe_ingredients_to_list(request, recipe_id):
-    recipe = get_object_or_404(Recipe, id=recipe_id)
-    # The 'if request.method == 'POST':' block is now redundant and can be removed
+    """
+    Adds all ingredients from a specific recipe to the user's shopping list,
+    handling duplicates gracefully by using get_or_create.
+    """
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
     
+    # Assuming 'ingredients_list' is the related manager on your Recipe model
     recipe_ingredients = recipe.ingredients_list.all() 
+    
     items_added = 0
+    items_skipped = 0
+    
     for ingredient in recipe_ingredients:
-        # ... (rest of your ShoppingListItem creation logic) ...
-        ShoppingListItem.objects.create(
-            user=request.user,
-            recipe=recipe,
-            name=ingredient.name,
-            quantity=ingredient.quantity,
-            # unit=ingredient.unit
-        )
-        items_added += 1
+        # 1. Clean up the ingredient name for consistent comparison
+        item_name = ingredient.name.strip()
         
-    messages.success(request, f"Successfully added {items_added} ingredients from '{recipe.name}' to your shopping list.")
+        # 2. Use get_or_create to check for existing item and prevent 500 error
+        # We use 'name__iexact' for case-insensitive check (e.g., 'salt' vs 'Salt')
+        item, created = ShoppingListItem.objects.get_or_create(
+            user=request.user,
+            name__iexact=item_name, # <-- Check for existing item by user and name (case-insensitive)
+            defaults={
+                'name': item_name, 
+                'quantity': ingredient.quantity, 
+                'unit': getattr(ingredient, 'unit', ''), # Use getattr for 'unit' safety
+                'recipe': recipe # Assuming your ShoppingListItem model has a 'recipe' ForeignKey
+            }
+        )
+
+        if created:
+            items_added += 1
+        else:
+            # The item already existed, so we skip adding the duplicate.
+            items_skipped += 1
+
+    # 3. Provide feedback to the user
+    success_message = f"Successfully added {items_added} ingredients from '{recipe.name}' to your shopping list."
+    if items_skipped > 0:
+        success_message += f" ({items_skipped} existing ingredients were skipped to avoid duplicates.)"
+        
+    messages.success(request, success_message)
+    
+    # 4. Redirect to the shopping list
     return redirect('shopping_list')
-    # return redirect('my_recipes') 
 
 @login_required
 @require_POST 

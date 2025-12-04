@@ -2038,18 +2038,27 @@
 @media screen and (max-width: 768px) {
     .navbar nav {
         /* Default: Hide the menu on mobile */
-        display: none; 
-        width: 100%;
+        display: flex !important; /* Temporarily show the flex container */
+        width: auto !important; /* Don't force 100% width unless needed */
+        position: static !important; /* Prevent overlay */
+        background-color: transparent !important; /* Prevent background overlay */
+        box-shadow: none !important;
         text-align: center;
         flex-direction: column;
         gap: 0; /* Remove gap for vertical list */
-        position: absolute; /* Allows it to overlay content */
         top: 60px; /* Adjust based on your navbar height */
         left: 0;
-        background-color: var(--white);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         z-index: 999;
         padding: 10px 0;
+    }
+
+
+    .navbar nav a:nth-child(-n+2) { /* Targets the first two links (Veg, Non-Veg) */
+        display: none !important;
+    }
+
+    .navbar nav a:nth-child(4) { 
+        display: none !important;
     }
 
     .navbar nav a {
@@ -2061,8 +2070,24 @@
     }
     
     .navbar .auth-buttons {
-        display: none; 
+        display: block !important ;
+        order: 3; 
     }
+
+    /* .navbar nav a[href*="about"] { 
+        display: block !important; 
+        order: -1; */
+    }
+
+    .navbar nav a:nth-child(3) { 
+        display: inline-block !important; 
+        font-size: 0.95em;
+        margin: 0 10px;
+        color: var(--secondary-color);
+        font-weight: 500;
+    
+    }
+
     .menu-toggle {
         display: block; 
         font-size: 1.5em;
@@ -2080,7 +2105,7 @@
         align-items: center;
         padding: 10px 5%; 
     }
-}
+
 
 .menu-toggle {
     display: none; 

@@ -15,5 +15,8 @@ urlpatterns = [
     path('shopping-list/add-custom/', views.add_custom_shopping_item, name='add_custom_shopping_item'),
     path('shopping-list/delete/<int:item_id>/', views.delete_shopping_item, name='delete_shopping_item'),
     path('shopping-list/clear/', views.clear_all_shopping_items, name='clear_all_shopping_items'),
+    path('reviews/', views.review_page, name='reviews'),
     path('shopping-list/toggle/<int:item_id>/', views.toggle_shopping_item_purchased, name='toggle_shopping_item_purchased'),
+    path("api/recipe/<int:recipe_id>/rating-summary/", views.recipe_rating_summary),
+    
 ]
