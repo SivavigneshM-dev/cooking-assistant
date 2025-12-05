@@ -547,8 +547,6 @@
         .uploader {
           padding: 10px;
         }
-
-        /* Make menu full-bleed on tiny screens for better tap targets */
         .menu {
           right: 8px;
           left: auto;
