@@ -15,6 +15,14 @@
       * {
         box-sizing: border-box;
       }
+
+      button.btn {
+        color: white;
+        background-color: #ff5c29;
+        border: 0px;
+        border-radius: 5px;
+        padding: 10px;
+      }
       body {
         margin: 0;
         background: linear-gradient(180deg, #fbfbfb 0%, #f2f2f2 100%);
@@ -547,6 +555,8 @@
         .uploader {
           padding: 10px;
         }
+
+        /* Make menu full-bleed on tiny screens for better tap targets */
         .menu {
           right: 8px;
           left: auto;

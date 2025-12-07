@@ -39,5 +39,3 @@ class ShoppingListItem(models.Model):
     def __str__(self):
         return f"{self.quantity} {self.unit} {self.name}"
 
-
-    

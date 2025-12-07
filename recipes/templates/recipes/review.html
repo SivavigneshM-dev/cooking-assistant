@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     {% load static %}
     <link rel="stylesheet" href="{% static 'review.css' %}" />
+    <link rel="icon" type="image/png" href="{% static 'images/Recipe-Logo1.png' %}">
     <title>RecipeShare — Reviews</title>
   </head>
   <body>
@@ -12,13 +13,7 @@
       <header>
         <div style="display: flex; align-items: center; gap: 12px">
           <!-- BACK button -->
-          <button
-            class="back-btn"
-            onclick="history.back()"
-            aria-label="Go back"
-          >
-            ← Back
-          </button>
+          <button class="back-btn" onclick="history.back()" aria-label="Go back" >← Back</button>
           <h1>RecipeShare — User Reviews</h1>
         </div>
         <div class="small">
@@ -57,18 +52,12 @@
         </div>
         <div style="margin-left: auto; text-align: right">
           <div style="font-weight: 600">Verified cooks ❤️</div>
-          <div style="color: var(--muted); font-size: 13px">
-            Top contributors highlighted
-          </div>
+          <div style="color: var(--muted); font-size: 13px">Top contributors highlighted</div>
         </div>
       </section>
 
       <div class="controls">
-        <input
-          type="search"
-          id="search"
-          placeholder="Search reviews, recipes or user"
-        />
+        <input type="search" id="search" placeholder="Search reviews, recipes or user"/>
         <select id="filter">
           <option value="recent">Most recent</option>
           <option value="highest">Highest rating</option>
@@ -130,8 +119,8 @@
           </div>
           <button class="more-btn" aria-label="More">⋯</button>
           <div class="menu">
-            <button class="edit">Edit</button
-            ><button class="delete">Delete</button>
+            <button class="edit">Edit</button>
+            <button class="delete">Delete</button>
           </div>
         </article>
 

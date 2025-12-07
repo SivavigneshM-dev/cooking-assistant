@@ -2009,15 +2009,32 @@ footer {
 }
 
 /* ______________________________________________________________________________________________________________________________________________________________________________________ */
-
 /* MObile  Responsive */
-/* --- Hamburger Menu/Mobile Nav Structure --- */
+/* ______________________________________________________________________________________________________________________________________________________________________________________ */
 
-/* 1. Hide the desktop navigation links container and the user profile button on screens <= 768px */
 @media screen and (max-width: 768px) {
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5;
+    gap: 15px;
+  }
+  .logo {
+    order: 1; /* Place logo first on the left */
+    font-size: 1.3em;
+    padding: 0;
+  }
+  .auth-buttons {
+    display: flex !important; /* Must be visible */
+    order: 3; /* Place on the right */
+    gap: 10px; /* Space between links if there are multiple (like Sign In/Up) */
+    align-items: center;
+    flex-shrink: 0;
+  }
   .navbar nav {
-    /* Default: Hide the menu on mobile */
-    display: flex !important; /* Temporarily show the flex container */
+    display: none;
+    visibility: hidden;
     width: auto !important; /* Don't force 100% width unless needed */
     position: static !important; /* Prevent overlay */
     background-color: transparent !important; /* Prevent background overlay */
@@ -2052,10 +2069,6 @@ footer {
     display: block !important ;
     order: 3;
   }
-
-  /* .navbar nav a[href*="about"] { 
-        display: block !important; 
-        order: -1; */
 }
 
 .navbar nav a:nth-child(3) {
@@ -2307,36 +2320,70 @@ footer {
     font-size: 90px;
   }
 }
+/* --- Authentication Specific Styles for Login/Signup Pages --- */
+/* ... (existing styles above) ... */
+
 /* =========================================
    FIX MOBILE INPUT SQUEEZE (REAL SOLUTION)
    ========================================= */
 @media (max-width: 500px) {
+  /* 1. Reduce vertical padding on the body for more screen space */
   .auth-page-body {
-    padding: 20px 0px;
+    padding: 20px 0px; /* Reduced vertical padding */
   }
 
+  /* 2. Make the main card/box take full width and remove borders/shadows */
   .auth-box {
     width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
     border-radius: 0 !important;
+    /* Correction for reducing the left/right padding inside the box (auth-page-body padding is already reduced) */
+    padding: 30px 15px; /* Adjust internal padding if necessary, but keep it consistent */
   }
 
+  /* 3. Reduce horizontal padding on the form container */
   .form-container {
+    /* Set horizontal padding to a smaller value like 15px */
     padding: 10px 15px !important;
   }
 
+  /* 4. Increase Input Width (It should already be 100% due to form-box, but this ensures it) */
+  .form-box {
+    width: 100% !important; /* Ensure the form-box itself is full width */
+  }
+
+  .form-box p {
+    width: 100% !important; /* Ensure the Django form paragraphs are full width */
+  }
+
   .form-box input {
+    /* This ensures the input takes up the full width of its parent */
     width: 100% !important;
     box-sizing: border-box !important;
     padding: 12px 15px !important;
+    /* Ensure font-size is at least 16px to prevent mobile zooming */
+    font-size: 16px !important;
   }
 
+  /* Keep padding for password toggle icon */
   .password-input-wrapper input {
     padding-right: 45px !important;
   }
+
   .auth-switch-link {
     display: block;
     padding: 5px 0;
+  }
+
+  /* Ensure the sign-in button spans the full width of the input fields */
+  .form-box .btn.sign-in-btn,
+  .form-box .btn.get-started-btn {
+    width: 100% !important; /* Full width for button on small screens */
+  }
+
+  /* Ensure error lists also span full width if they appear */
+  .form-box ul {
+    width: 100% !important;
   }
 }
