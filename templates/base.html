@@ -13,10 +13,13 @@
 <body class="{% if '/accounts/' in request.path %}auth-page-body{% endif %}">
 
 {% if '/accounts/login/' not in request.path and '/accounts/signup/' not in request.path %}
-    <header class="navbar">
+    <div class="navbar">
         <div class="logo">
+            <button class="menu-toggle" aria-label="Toggle navigation" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
             <a href="{% url 'home' %}" style="text-decoration: none; display: flex; align-items: center; color: inherit;">
-            <img src="{% static 'images/Recipe-Logo1.png' %}" alt="RecipeShare" style="height: 50px; width: auto; margin-right: 10px;">
+            <img src="{% static 'images/Recipe-Logo1.png' %}" alt="RecipeShare" style="height: 60px; width: auto; margin-right: 10px;">
         </a>
         </div>
         <nav>
@@ -37,7 +40,7 @@
             {% else %}
         
                 <a href="{% url 'login' %}" class="btn sign-in-btn">Sign In</a>
-        
+                
             {% endif %}
         </div>
         <div id="toast-box">
@@ -47,7 +50,7 @@
                 </svg>
                 <span id="toast-message">Message goes here</span>
         </div>
-    </header>
+    </div>
 
     <main>
 {% endif %}

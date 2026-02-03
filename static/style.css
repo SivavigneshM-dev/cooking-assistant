@@ -103,7 +103,7 @@ h5 {
 }
 
 .logo {
-  font-size: 1.5em;
+  font-size: 2em;
   font-weight: bold;
   color: var(--primary-color);
 }
@@ -1397,9 +1397,9 @@ footer {
 }
 
 /* Base Navbar style for mobile menu visibility */
-.navbar {
-  z-index: 1030; /* Ensure navbar is on top */
-}
+/* .navbar {
+  z-index: 1030; 
+} */
 
 /* Default Sidebar Style (Desktop) */
 .dashboard-sidebar {
@@ -1508,7 +1508,7 @@ footer {
 
   /* Style for the sidebar links when they appear in the mobile navbar dropdown */
   .navbar-nav .nav-link {
-    color: #333;
+    color: blue;
     font-weight: 500;
     padding: 10px 15px;
     border-radius: 8px;
@@ -2017,7 +2017,7 @@ footer {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 5;
+    padding: 10px 15px;
     gap: 15px;
   }
   .logo {
@@ -2064,26 +2064,14 @@ footer {
     display: block; /* Make links take full width */
     text-align: left;
   }
-
-  .navbar .auth-buttons {
-    display: block !important ;
-    order: 3;
-  }
-}
-
-.navbar nav a:nth-child(3) {
-  display: inline-block !important;
-  font-size: 0.95em;
-  margin: 0 10px;
-  color: var(--secondary-color);
-  font-weight: 500;
 }
 
 .menu-toggle {
-  display: block;
+  display: none;
+  background: none;
+  border: none;
   font-size: 1.5em;
   cursor: pointer;
-  padding: 5px;
   color: var(--secondary-color);
 }
 
@@ -2098,7 +2086,7 @@ footer {
 }
 
 .menu-toggle {
-  display: none;
+  display: block;
 }
 
 @media screen and (max-width: 600px) {
@@ -2386,4 +2374,65 @@ footer {
   .form-box ul {
     width: 100% !important;
   }
+}
+
+
+/* Add to the end of your style.css */
+/* --- Responsive Navigation Fixes --- */
+
+@media (max-width: 768px) {
+    /* 1. Navbar: Make it full width and keep logo/toggle visible */
+    .navbar {
+        flex-wrap: wrap; /* Allows items to wrap */
+        padding: 10px 5%; /* Reduced vertical padding */
+    }
+
+    /* 2. Hide the main <nav> links and auth-buttons by default on mobile */
+    .navbar nav,
+    .auth-buttons {
+        display: none; /* Hide by default */
+        width: 100%; /* Take full width when displayed */
+        flex-direction: column;
+        text-align: center;
+    }
+
+    /* 3. Make the logo take up space alongside the toggle button */
+    .logo {
+        flex-grow: 1; /* Allow logo to take up remaining space */
+        text-align: left;
+    }
+
+    /* 4. Style for when the menu is active (Toggled via JavaScript) */
+    .navbar.active nav,
+    .navbar.active .auth-buttons {
+        display: flex; /* Show when the 'active' class is present */
+    }
+
+    /* 5. Adjust individual nav items to be full width */
+    .navbar nav a {
+        margin: 10px 0; /* Stack them vertically with space */
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .navbar nav a:last-child {
+        border-bottom: none;
+    }
+
+    /* 6. Adjust Auth Button (Profile Button) on mobile */
+    .auth-buttons {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+    }
+    
+    .btn.user-profile-btn {
+        width: 100%; /* Make the 'siva' button full width */
+        justify-content: center; /* Center content */
+    }
+    
+    .auth-buttons .sign-in-btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 }

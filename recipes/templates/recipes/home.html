@@ -116,9 +116,6 @@ Amazing Recipes{% endblock %} {% block content %}
   function toggleFavorite(event, recipeId) {
     event.preventDefault(); // Stop page from reloading
 
-    // Check if user is logged in (simple check if the URL exists)
-    // Note: You might want to handle the "Not Logged In" case in UI
-
     fetch(`/toggle-favorite/${recipeId}/`, {
       method: "GET",
       headers: {
